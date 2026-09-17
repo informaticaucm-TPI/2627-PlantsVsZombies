@@ -28,7 +28,14 @@ public class Controller {
 	 * Runs the game logic.
 	 */
 	public void run() {
-		// TODO fill your code
+    view.showGame();
+				while (!game.hasGameFinished()) {
+          // TODO fill your code
+					// Prompt the user for a line (getPrompt)
+          // Execute the user's command (method)
+				}
+				view.showEndMessage();
 	}
+  
 
 }
