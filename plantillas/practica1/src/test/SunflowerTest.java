@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import pvz.control.Level;
 import pvz.logic.Game;
 import pvz.logic.gameobjects.Sunflower;
-import pvz.utils.Position;
+import utils.Position;
 
 import static org.junit.jupiter.api.Assertions.*;
 

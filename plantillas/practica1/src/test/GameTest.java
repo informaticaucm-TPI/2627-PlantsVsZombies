@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import pvz.logic.Game;
 import pvz.control.Level;
-import pvz.utils.Position;
+import utils.Position;
 
 import static org.junit.jupiter.api.Assertions.*;
 
