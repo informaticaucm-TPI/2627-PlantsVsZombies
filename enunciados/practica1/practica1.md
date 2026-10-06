@@ -336,9 +336,7 @@ Las actualizaciones que ocurren en cada ciclo son:
   derecha.
 - Los zombis avanzan (un zombi no puede avanzar si tiene a otro zombi o a una planta en la casilla inmediatamente a su
   izquierda, en la dirección de avance).
-- Si un zombi tiene una planta en la casilla inmediatamente a su izquierda (y no puede avanzar), ejerce 1 punto de daño
-  a dicha planta. **En un ciclo dado, un zombi o bien avanza o bien ataca; nunca realiza ambas acciones en el mismo
-  ciclo.**
+- Los zombies atacan en todos los ciclos y se mueven cada 2 ciclos. Si un zombie, en el ciclo en el que le toca moverse tiene una planta en la casilla inmediatamente a su izquierda (y no puede avanzar) solo ataca y ejerce 1 punto de daño a dicha planta. **Si puede avanzar, avanza y ataca**.
 - Si una planta o un zombi llegan a 0 de resistencia entonces desaparecen del tablero.
 
 El **juego finalizará** si durante el `update` todos los zombis son destruidos o uno de los zombis llega al final de la
