@@ -3,11 +3,11 @@ package pvz.view;
 import static pvz.view.Messages.PROMPT;
 import static pvz.view.Messages.debug;
 import static pvz.view.Messages.error;
-import static utils.StringUtils.*;
+import static pvz.utils.StringUtils.*;
 
 import pvz.logic.Game;
-import utils.Position;
-import utils.StringUtils;
+import pvz.utils.Position;
+import pvz.utils.StringUtils;
 
 import java.util.Scanner;
 
