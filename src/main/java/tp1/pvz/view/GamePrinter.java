@@ -36,7 +36,7 @@ public class GamePrinter implements GameView {
 
 	private static final String MARGIN = repeat(SPACE, MARGIN_SIZE);
 
-	private static final int CELL_SIZE = 8;
+	private static final int CELL_SIZE = 12;
 
 	private static final String CELL_BORDER = repeat(CELL_BORDER_CHAR, CELL_SIZE);
 
@@ -44,10 +44,10 @@ public class GamePrinter implements GameView {
 
 	private static final String INDENTED_ROW_BORDER = String.format("%n%s%s%n", MARGIN, ROW_BORDER);
 
-	private Game game;
+	private GameStatus game;
 	private Scanner scanner;
 
-	public GamePrinter(Game game) {
+	public GamePrinter(GameStatus game) {
 		this.game = game;
 		this.scanner = new Scanner(System.in);
 	}
@@ -78,9 +78,9 @@ public class GamePrinter implements GameView {
 		// Paint game board
 		str.append(INDENTED_ROW_BORDER);
 
-		for (int row = 0; row < Game.NUM_ROWS; row++) {
+		for (int row = 0; row < GameWorld.NUM_ROWS; row++) {
 			str.append(MARGIN).append(VERTICAL_DELIMITER);
-			for (int col = 0; col < Game.NUM_COLS; col++) {
+			for (int col = 0; col < GameWorld.NUM_COLS; col++) {
 				str.append(StringUtils.centre(game.positionToString(new Position(row, col)), CELL_SIZE)).append(VERTICAL_DELIMITER);
 			}
 			str.append(INDENTED_ROW_BORDER);
