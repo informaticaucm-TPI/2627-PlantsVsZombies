@@ -41,6 +41,7 @@ introducido [puedes consultar la historia del documento](https://github.com/info
     * [Detalles de la mecánica](#detalles-de-la-mecánica)
     * [Implementación de la mecánica](#implementación-de-la-mecánica)
   - [La interfaz `GameAction` y las acciones `ExplosionAction`](#la-interfaz-gameaction-y-las-acciones-explosionaction)
+  - [Opcional: Pinta la valla y los zombies fuera del tablero](#pinta-zombies-y-valla)
   - [Pruebas](#práctica2-parte2-pruebas)
 
 <!-- TOC end -->
@@ -102,7 +103,7 @@ los detalles:
 
 - La clase `Command`. Es una clase abstracta que encapsula la funcionalidad común de todos los comandos concretos.
 - Comandos concretos. Son las acciones del usuario: `AddPlantCommand`,`HelpCommand`, `ExitCommand`... Cada acción va a
-  tener su propia clase. Cada comando tiene dos métodos básicos:
+  tener su propia clase. Cada comando tiene tres métodos básicos:
   - `matchCommand(String)`: es el método que comprueba si una acción introducida por teclado corresponde a la del
     comando.
   - `create(String[])`: es el método que crea una instancia del comando dados los parámetros proporcionados por el
@@ -167,6 +168,13 @@ public abstract class Command {
       new HelpCommand(),
       // ...
   );
+  
+  //...
+  protected String name;
+  protected String shortcut;
+  protected String details;
+  protected String help;
+  //...
 
 
   public static Command parse(String[] commandWords) {
@@ -184,33 +192,34 @@ Todos los comandos tienen una serie de **propiedades**: nombre, atajo, detalle, 
 
 ```java
 public class HelpCommand extends Command {
-
-  protected String getName() {
-    return Messages.COMMAND_HELP_NAME;
+	
+  public HelpCommand() {
+    this.name = Messages.COMMAND_HELP_NAME;
+    this.shortcut = Messages.COMMAND_HELP_SHORTCUT;
+    this.details = Messages.COMMAND_HELP_DETAILS;
+    this.help =  Messages.COMMAND_HELP_HELP;
   }
 
-  protected String getShortcut() {
-    return Messages.COMMAND_HELP_SHORTCUT;
+  @Override
+  public void execute(GameModel model, GameView view) {
+    // ...
   }
-
-  public String getDetails() {
-    return Messages.COMMAND_HELP_DETAILS;
-  }
-
-  // ...
 }
 ```
 
 Como puede apreciarse, todos los comandos heredan de la clase `Command`. La clase `Command` es abstracta, por lo que son
-los comandos concretos los que implementan la funcionalidad:
+los comandos concretos los que implementan sus funcionalidades específicas:
 
-- El método `execute` realiza la acción sobre el *game* (realmente un `GameModel` que explicaremos más adelante) 
+- El método `execute` realiza la acción sobre el *game* (realmente un `GameModel` que explicaremos más adelante)
   y una vista `view` (de tipo `GameView`, que ya teníamos de la práctica anterior). El método no devuelve nada,
   pues "ejecutar" un comando consiste simplemente en delegar en `game` algo (avanzar la partida, resetearla,...) y después,
   si es necesario, mostrar algo por la pantalla (es decir, ordenar a `view` que repite el tablero o muestre un mensaje de ayuda).
 - El método `create(String[])` devuelve una instancia del comando concreto. Como cada comando procesa sus propios
   parámetros, este método devolverá `this` o creará una nueva instancia de la misma clase. En el caso de que los
   argumentos introducidos por el usuario no sean válidos para el comando, el método `create(String[])` devolverá `null`.
+
+Sin embargo, hay métodos que pueden tener una implementación por defecto en `Command`, como `protected String getName()/getShortcut()` o 
+`public String getDetails()/getHelp()`.
 
 <!-- TOC --><a name="la-clase-game-y-sus-diferentes-usos"></a>
 
@@ -225,7 +234,7 @@ cualquier parte de la aplicación podemos llamar a los métodos de `Game`. Para 
 *acoplamiento* en nuestro código, podemos hacer uso de las interfaces de Java.
 
 Mediante las interfaces de Java podemos declarar de manera específica las dependencias / necesidades de una parte de
-nuestro código. En nuestro vamos a definir tres interfaces:
+nuestro código. En nuestro caso vamos a definir tres interfaces:
 
 - `GameStatus`: Incluirá todos los métodos que necesita `GamePrinter` para "conocer" el estado del mundo y poder hacer
   su trabajo.
@@ -238,7 +247,7 @@ public interface GameStatus {
 ```
 
 - `GameWorld`: Incluirá todos los métodos que necesitan los objetos del juego (plantas, zombies, etc.),
-para saber qué pasa en el *mundo del juego* e interactuar entre sí:
+  para saber qué pasa en el *mundo del juego* e interactuar entre sí:
 
 ```java
 public interface GameWorld {
@@ -254,7 +263,7 @@ public interface GameWorld {
 ```
 
 - `GameModel` es la interfaz que permite alterar el estado de la partida (reiniciarla, actualizarla, ...) y es la que van
-a conocer los comandos del juego. Es el punto de entrada para las acciones del usuario:
+  a conocer los comandos del juego. Es el punto de entrada para las acciones del usuario:
 ```java
 public interface GameModel {
   void reset();
@@ -344,11 +353,11 @@ En nuestra práctica queremos que el `Game` sea lo más simple posible y, aunque
 programa, su labor (responsabilidad) es coordinar al resto de las clases, y lo hace *delegando*.
 
 La delegación consiste en lo siguiente: cuando están correctamente programados, los métodos de `Game` son muy pequeños y
-lo que hacen es llamar a los métodos de otros objetos (es decir, colaboran con ellos) que son los que realmente hacen el trabajo. 
+lo que hacen es llamar a los métodos de otros objetos (es decir, colaboran con ellos) que son los que realmente hacen el trabajo.
 Uno de los objetos en los que delega es `GameObjectContainer`.
 
-El `GameObjectContainer` es el almacén de objetos del juego (para acortar escribiremos contenedor, o a veces simplemente `GOC`). 
-Es el encargado de actualizarlos, borrarlos, etc. Para el almacén podemos utilizar cualquier tipo de colección. 
+El `GameObjectContainer` es el almacén de objetos del juego (para acortar escribiremos contenedor, o a veces simplemente `GOC`).
+Es el encargado de actualizarlos, borrarlos, etc. Para el almacén podemos utilizar cualquier tipo de colección.
 Nosotros por simplicidad vamos a usar un `ArrayList` de `GameObject`s cuya declaración es así:
 
 ```java
@@ -504,7 +513,7 @@ Aunque te pueda parecer que el código es correcto (es más, funciona), es un **
 programación orientada a objetos**.
 
 Este ejemplo de código, por un lado, rompe la abstracción y encapsulación (ha sido necesario crear un mutador
-`setAlive()`) y por otro, hace que el código sea poco mantenible porque tendremos que modificar el método `update()` de 
+`setAlive()`) y por otro, hace que el código sea poco mantenible porque tendremos que modificar el método `update()` de
 `Zombie` para cada nuevo tipo de planta.
 
 Otra opción que estaría igual de mal consiste en implementar métodos que simulen el comportamiento de
@@ -565,6 +574,30 @@ public void update() {
   //...
 }
 ```
+o incluso una aproximación en la que en lugar de que la clase `Zombie` "manipule" el `GameObject`, le indique a la
+referencia a `GameWorld` que tiene que atacar a un zombie. Esto tiene sentido porque así evitamos exponer los objetos
+del juego a otros objetos, dar a conocer a `Zombie` que `GameWorld` tiene un método llamado `getGameObjectInPosition`
+y además optamos por una aproximación más natural: en lugar de que `Zombie` recabe un montón
+de información para realizar el ataque, simplemente le indica a la clase responsable de administrar el juego que lo haga:
+
+```java
+public void update() {
+  //...
+  game.plantAttack(this.position, this.damage);
+  //...
+}
+```
+
+La implementación de ese método es la que se ha visto más arriba:
+```java
+  // Game.java
+  public boolean plantAttack(Position position, int damage) {
+  GameItem item = this.getGameItemInPosition(position);
+  if (item != null) {
+    item.receiveZombieAttack(this.damage);
+  }
+}
+```
 
 El código es muy similar al anterior, pero usamos la *interfaz* como tipo de datos. Así ya **no rompemos la
 encapsulación**, ya que sólo se conectan con abstracciones.
@@ -578,7 +611,7 @@ implementar interacciones más complejas.
 ## Pruebas
 
 Recuerda que una vez terminada la refactorización, la práctica debe funcionar exactamente igual que en la versión
-anterior y debe pasar los mismos tests, aunque tendremos muchas más clases. Así, conseguimos dejar preparada la 
+anterior y debe pasar los mismos tests, aunque tendremos muchas más clases. Así, conseguimos dejar preparada la
 estructura para añadir fácilmente nuevos comandos y objetos de juego en la *Parte II*.
 
 Ten en cuenta que los test, al igual que el código fuente de la aplicación, es algo vivo: en numerosas ocasiones
@@ -664,7 +697,7 @@ jerarquía, analiza qué clases de tu jerarquía deberían de ser clases abstrac
 Si has planteado bien la lista de objetos y el juego, no deberías tener que hacer ningún cambio importante, lo único que
 tendrás que hacer es crear las clases y registrar los nuevos objetos en sus respectivas factorías.
 
-De todas formas, ten en cuenta que el código es algo vivo, y no sería extraño que a medida que fueses incorporando 
+De todas formas, ten en cuenta que el código es algo vivo, y no sería extraño que a medida que fueses incorporando
 nuevos objetos o funcionalidades al juego te des cuenta de que hay más código que puedes simplificar, escribir de forma
 más sencilla o lógica que se mueva de una clase más específica a una más general. No tengas miedo a ir mejorando
 tu propio código de forma iterativa. Abraza el cambio :)
@@ -723,7 +756,7 @@ Su representación será `WN`.
 
 ### BucketHead zombie
 
-Es un zombie más lento pero más resistente, porque lleva un cubo protegiendo su cabeza. 
+Es un zombie más lento pero más resistente, porque lleva un cubo protegiendo su cabeza.
 Camina un paso cada *4* ciclos y tiene resistencia *8*.
 
 Su representación será `Bz`.
@@ -782,7 +815,7 @@ pruebas, de modo que sea posible cambiar el nivel y la semilla de juego sin tene
 juego.
 
 El `ResetCommand` debe ser suficientemente flexible como para o bien recibir 0 parámetros y, por tanto, utilizar el
-nivel y semilla proporcionados como parámetro de línea de comandos, o bien recibir 2 parámetros (mismo tipo y orden que
+nivel y semilla que se venían utilizando, o bien recibir 2 parámetros (mismo tipo y orden que
 en la línea de comandos) que se utilizarán para reiniciar la partida.
 
 Ten en cuenta que al resetear el juego, también se debe reiniciar la instancia de `Random` que se utiliza para generar
@@ -1008,7 +1041,7 @@ posible que otros objetos apilen otros efectos, que a su vez serán ejecutados u
 actual. Como resultado adicional, la pila de acciones de juego nos permite definir un orden consistente en la ejecución
 de las acciones que nos facilita la depuración de la aplicación.
 
-Pese a que existe la clase `java.util.Stack` [su propia documentación](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Stack.html) 
+Pese a que existe la clase `java.util.Stack` [su propia documentación](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Stack.html)
 nos indica que es más recomendable utilizar una clase que
 implemente la interfaz `java.util.Deque` por lo que en nuestro caso hemos decidido utilizar la clase
 `java.util.ArrayDeque`.
@@ -1065,19 +1098,119 @@ private boolean arePendingActionsLeft() {
 }
 ```
 
+<!-- TOC --><a name="pinta-zombies-y-valla"></a>
+
+## Opcional: Pinta la valla y los zombies fuera del tablero
+
+Durante la práctica I no podíamos ver a los zombies que, pese a estar en la partida, aún no habían entrado al tablero.
+Queda a vuestra disposición modificar la función `public void showGame()` de `GamePrinter` para lograrlo. A continuación se
+incluye un ejemplo de ejecución con esta modificación estética:
+
+```
+Level: EASY
+Random generator initialized with seed: 25
+Number of cycles: 0
+Sun coins: 50
+Remaining zombies: 3
+Generated suns: 0
+Caught suns: 0
+
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+   
+   ...
+   
+Number of cycles: 1
+Sun coins: 50
+Remaining zombies: 2
+Generated suns: 0
+Caught suns: 0
+
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || Bz[08]
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+   
+   ...
+
+Number of cycles: 2 - 3
+Sun coins: 50
+Remaining zombies: 1
+Generated suns: 0
+Caught suns: 0
+
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || Bz[08] Z[05]
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ────────────    
+   
+   ...
+   
+Number of cycles: 4
+Sun coins: 50
+Remaining zombies: 1
+Generated suns: 0
+Caught suns: 0
+
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |    Z[05]   || Bz[08]
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+   
+   ...
+   
+Number of cycles: 10
+Sun coins: 50
+Remaining zombies: 0
+Generated suns: 1
+Caught suns: 0
+
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |    *[06]   |            |            |            |            |            |            |            || Sz[02]
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |    Z[05]   |            |            |   Bz[08]   || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+  |            |            |            |            |            |            |            |            || 
+   ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── ──────────── 
+```
+
 <!-- TOC --><a name="práctica2-parte2-pruebas"></a>
 
 ## Pruebas
 
 Durante la parte I de la práctica, fruto del refactor que hemos hecho, va a ser necesario:
-* Renombrar algunos métodos en las clases de prueba de los objetos del juego (`PeashooterTest`, `SunflowerTest` y 
-`ZombieTest`). Basta con hacer un "buscar y reemplazar". Esto es algo normal y natural en el mundo del software: los test,
-que no dejan de ser código que acompaña al código principal, evolucionan a medida que lo hace este.
+* Renombrar algunos métodos en las clases de prueba de los objetos del juego (`PeashooterTest`, `SunflowerTest` y
+  `ZombieTest`). Basta con hacer un "buscar y reemplazar". Esto es algo normal y natural en el mundo del software: los test,
+  que no dejan de ser código que acompaña al código principal, evolucionan a medida que lo hace este.
 * Deben seguir funcionando igual que cuando se entregó la práctica I. Hemos refactorizado el código (quizá cambiando ligeramente
-el nombre de algunos métodos, lo que provoca el renombrado descrito en el punto anterior), pero la funcionalidad no ha cambiado.
-Si algún test que no fallaba ahora lo hace, algo hemos _roto_ por el camino.
+  el nombre de algunos métodos, lo que provoca el renombrado descrito en el punto anterior), pero la funcionalidad no ha cambiado.
+  Si algún test que no fallaba ahora lo hace, algo hemos _roto_ por el camino.
 
 Ahora bien, en la parte dos sí hemos hecho cambios que afectan a la lógica del juego: hay nuevos comandos, nuevos tipos
 de plantas y zombies, etc. Por tanto, es necesario utilizar nuevos test. Estos os los proporcionamos pero tened en cuenta
-que no deberíais incorporarlos a vuestro proyecto hasta que la parte I esté completamente finalizada y comencéis a trabajar 
+que no deberíais incorporarlos a vuestro proyecto hasta que la parte I esté completamente finalizada y comencéis a trabajar
 en la parte II.

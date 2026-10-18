@@ -66,6 +66,46 @@ public class GamePrinter implements GameView {
 	}
 
 	/**
+	 * Prevents to print several suns in the same cell
+	 *
+	 * @param repr The string representation of the objects of the cell,
+	 *             which may contain several suns. Only the first one will be kept
+	 */
+	private String filterRepeatedSuns(String repr) {
+
+		// Build the pattern that represents a Sun
+		Pattern sunRepresentationPattern = Pattern.compile(Messages.GAME_OBJECT_ICON
+				.formatted("\\" + SUN_SYMBOL, 0)
+				.replace("[", "\\[")
+				.replace("]", "\\]")
+				.replace("00", "\\d+")
+		);
+
+		Matcher matcher = sunRepresentationPattern.matcher(repr);
+
+		if (matcher.find()) {
+			StringBuilder sb = new StringBuilder();
+
+			// 1. Add everything up to the end of the first match (includes the match)
+			sb.append(repr, 0, matcher.end());
+
+			int lastEnd = matcher.end();
+			// 2. Loop through subsequent matches and keep ONLY the non-matching text between them
+			while (matcher.find()) {
+				sb.append(repr, lastEnd, matcher.start());
+				lastEnd = matcher.end();
+			}
+			// 3. Append any remaining non-matching text at the end of the string
+			sb.append(repr.substring(lastEnd));
+
+			return sb.toString();
+		}
+
+		// If no match was found, return the original text unchanged
+		return repr;
+	}
+
+	/**
 	 * Prints complete representation (status+board) of the game.
 	 */
 	@Override
@@ -81,7 +121,8 @@ public class GamePrinter implements GameView {
 		for (int row = 0; row < GameWorld.NUM_ROWS; row++) {
 			str.append(MARGIN).append(VERTICAL_DELIMITER);
 			for (int col = 0; col < GameWorld.NUM_COLS; col++) {
-				str.append(StringUtils.centre(game.positionToString(new Position(row, col)), CELL_SIZE)).append(VERTICAL_DELIMITER);
+				String objetsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, col)));
+				str.append(StringUtils.centre(objetsInPosition, CELL_SIZE)).append(VERTICAL_DELIMITER);
 			}
 			str.append(INDENTED_ROW_BORDER);
 		}
