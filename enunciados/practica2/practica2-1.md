@@ -142,7 +142,7 @@ El esqueleto del código es este:
 ```java
 public abstract class Command {
 
-  private static final List<Command> AVAILABLE_COMMANDS = Arrays.asList(
+  protected static final List<Command> AVAILABLE_COMMANDS = Arrays.asList(
       new AddPlantCommand(),
       new ListPlantsCommand(),
       new ResetCommand(),
