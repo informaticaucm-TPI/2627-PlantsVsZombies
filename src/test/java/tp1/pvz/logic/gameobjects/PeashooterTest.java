@@ -1,137 +1,161 @@
 package tp1.pvz.logic.gameobjects;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tp1.pvz.control.Level;
 import tp1.pvz.logic.Game;
+import tp1.pvz.logic.GameWorld;
+import tp1.pvz.testsupport.FakeGameWorld.Attack;
 import tp1.pvz.utils.Position;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for Peashooter.
- * <p>
- * The peashooter's shoot() is private; its effect (damaging zombies) is tested
- * indirectly through game state. Calling update() when no zombie is in range
- * must not throw and must not change the peashooter itself.
- * <p>
- * The zombie-killing scenario is covered in GameTest to avoid needing
- * fine-grained access to the zombie list from outside Game.
+ * Peashooter: cost 50, damage 1, endurance 3. Every cycle it asks the world to
+ * attack from its own cell towards the right; it never touches a zombie directly.
  */
-class PeashooterTest {
+class PeashooterTest extends AbstractPlantTest {
 
-    private Game game;
-    private Position position;
-    private Peashooter peashooter;
-
-    @BeforeEach
-    void setUp() {
-        game = new Game(0L, Level.EASY);
-        position = new Position(0, 3);
-        peashooter = new Peashooter(position, game);
+    @Override
+    protected Plant create(Position position, GameWorld world) {
+        return new Peashooter(position, world);
     }
 
-    // ------------------------------------------------------------------ //
-    //  Initial state                                                       //
-    // ------------------------------------------------------------------ //
+    @Override
+    protected String expectedListName() {
+        return "[P]eashooter";
+    }
 
-    @Test
-    void initiallyAlive() {
-        assertTrue(peashooter.isAlive());
+    @Override
+    protected String expectedSymbol() {
+        return "P";
+    }
+
+    @Override
+    protected int expectedCost() {
+        return 50;
+    }
+
+    @Override
+    protected int expectedDamage() {
+        return 1;
+    }
+
+    @Override
+    protected int expectedEndurance() {
+        return 3;
     }
 
     @Test
-    void isInPosition_matchesConstructorPosition() {
-        assertTrue(peashooter.isInPosition(position));
-    }
-
-    @Test
-    void isInPosition_differentPosition_returnsFalse() {
-        assertFalse(peashooter.isInPosition(new Position(0, 4)));
-        assertFalse(peashooter.isInPosition(new Position(1, 3)));
-    }
-
-    @Test
-    void cost_is50() {
+    void cost_constantIs50() {
         assertEquals(50, Peashooter.COST);
     }
 
     // ------------------------------------------------------------------ //
-    //  Damage and survival                                                 //
+    //  Shooting                                                            //
     // ------------------------------------------------------------------ //
 
     @Test
-    void receiveZombieAttack_reducesHealth() {
-        // Peashooter starts with 3 health. After 1 hit it should still be alive.
-        peashooter.receiveDamage(1);
-        assertTrue(peashooter.isAlive());
+    void update_shootsFromItsOwnCell_withDamage1() {
+        plant.update();
+        assertEquals(1, world.plantAttacks.size());
+        assertEquals(new Attack(POS, 1), world.plantAttacks.get(0));
     }
 
     @Test
-    void receiveZombieAttack_3hits_kills() {
-        peashooter.receiveDamage(1);
-        peashooter.receiveDamage(1);
-        peashooter.receiveDamage(1);
-        assertFalse(peashooter.isAlive());
+    void update_shootsEveryCycle() {
+        for (int i = 0; i < 5; i++) {
+            plant.update();
+        }
+        assertEquals(5, world.plantAttacks.size());
     }
 
     @Test
-    void receiveZombieAttack_2hits_stillAlive() {
-        peashooter.receiveDamage(1);
-        peashooter.receiveDamage(1);
-        assertTrue(peashooter.isAlive());
+    void update_neverHurtsPlants() {
+        plant.update();
+        assertTrue(world.zombieAttacks.isEmpty());
     }
 
     @Test
-    void receiveZombieAttack_lethal_inOneBlow() {
-        peashooter.receiveDamage(99);
-        assertFalse(peashooter.isAlive());
+    void update_doesNotGenerateSunsOrCoins() {
+        plant.update();
+        assertEquals(0, world.generateSunCalls);
+        assertEquals(0, world.generatedCoins);
     }
 
     @Test
-    void noDamage_stillAlive() {
-        peashooter.receiveDamage(0);
-        assertTrue(peashooter.isAlive());
-    }
-
-    // ------------------------------------------------------------------ //
-    //  Shooting behaviour                                                  //
-    // ------------------------------------------------------------------ //
-
-    @Test
-    void update_noZombieInRange_doesNotThrow() {
-        // Peashooter should handle the absence of zombies gracefully.
-        assertDoesNotThrow(() -> peashooter.update());
-    }
-
-    @Test
-    void update_noZombieInRange_peashooterRemainsAlive() {
-        peashooter.update();
-        assertTrue(peashooter.isAlive());
-    }
-
-    @Test
-    void update_noZombieInRange_coinsUnchanged() {
-        int coinsBefore = game.getCoins();
-        peashooter.update();
-        assertEquals(coinsBefore, game.getCoins());
-    }
-
-    @Test
-    void deadPeashooter_update_doesNotThrow() {
-        peashooter.receiveDamage(99);
-        assertDoesNotThrow(() -> peashooter.update());
+    void deadPeashooter_doesNotShoot() {
+        plant.receiveZombieAttack(99);
+        plant.update();
+        assertTrue(world.plantAttacks.isEmpty());
     }
 
     // ------------------------------------------------------------------ //
-    //  Icon format                                                         //
+    //  Shooting with the real game                                         //
     // ------------------------------------------------------------------ //
 
+    private static String cell(Game game, int row, int col) {
+        return game.positionToString(new Position(row, col));
+    }
+
     @Test
-    void getIcon_containsPeashooterIdentifier() {
-        String icon = peashooter.getIcon();
-        assertNotNull(icon);
-        assertTrue(icon.contains("P") || icon.contains("p"),
-                "Icon should identify the plant type");
+    void shot_hitsTheFirstZombieOfItsRow() {
+        Game game = new Game(0L, Level.EASY);
+        Peashooter shooter = new Peashooter(new Position(0, 1), game);
+        game.addGameObject("z", new Position(0, 4));
+        game.addGameObject("z", new Position(0, 6));
+
+        shooter.update();
+
+        assertEquals(" Z[04]", cell(game, 0, 4), "nearest zombie takes the pea");
+        assertEquals(" Z[05]", cell(game, 0, 6), "the pea does not go through the first zombie");
+    }
+
+    @Test
+    void shot_ignoresZombiesOfOtherRows() {
+        Game game = new Game(0L, Level.EASY);
+        Peashooter shooter = new Peashooter(new Position(0, 1), game);
+        game.addGameObject("z", new Position(1, 4));
+
+        shooter.update();
+
+        assertEquals(" Z[05]", cell(game, 1, 4));
+    }
+
+    @Test
+    void shot_ignoresZombiesBehindThePlant() {
+        Game game = new Game(0L, Level.EASY);
+        Peashooter shooter = new Peashooter(new Position(0, 4), game);
+        game.addGameObject("z", new Position(0, 2));
+
+        shooter.update();
+
+        assertEquals(" Z[05]", cell(game, 0, 2));
+    }
+
+    @Test
+    void shot_flyesOverSunsAndPlants() {
+        Game game = new Game(0L, Level.EASY);
+        Peashooter shooter = new Peashooter(new Position(0, 0), game);
+        game.addGameObject("wn", new Position(0, 1));
+        game.addGameObject(new Sun(new Position(0, 2), game));
+        game.addGameObject("z", new Position(0, 5));
+
+        shooter.update();
+
+        assertEquals(" Z[04]", cell(game, 0, 5));
+        assertTrue(cell(game, 0, 1).contains("WN[10]"), "the wall-nut is not hurt by the pea");
+    }
+
+    @Test
+    void shot_killsASportyZombieInTwoCycles() {
+        Game game = new Game(0L, Level.EASY);
+        Peashooter shooter = new Peashooter(new Position(0, 0), game);
+        game.addGameObject("sz", new Position(0, 5)); // endurance 2
+
+        shooter.update();
+        shooter.update();
+        game.update(); // removes dead objects
+
+        assertEquals("", cell(game, 0, 5));
     }
 }

@@ -2,10 +2,10 @@ package complete;
 
 import org.junit.jupiter.api.Test;
 
-public class P1CompleteTest extends CompleteTest {
+public class P2CompleteTest extends CompleteTest {
 
-  public P1CompleteTest() {
-    super("p1");
+  public P2CompleteTest() {
+    super("p2");
   }
 
   @Test
@@ -31,5 +31,10 @@ public class P1CompleteTest extends CompleteTest {
   @Test
   public void test4() {
     testN(4);
+  }
+
+  @Test
+  public void test5() {
+    testN(5);
   }
 }

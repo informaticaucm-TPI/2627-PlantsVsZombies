@@ -1,152 +1,107 @@
 package tp1.pvz.logic.gameobjects;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tp1.pvz.control.Level;
-import tp1.pvz.logic.Game;
+import tp1.pvz.logic.GameWorld;
 import tp1.pvz.utils.Position;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for Sunflower.
- * <p>
- * These tests call sunflower.update() directly — they do NOT go through
- * game.update() — so zombie spawning has no effect on the results.
- * <p>
- * Coin-generation timing (confirmed by integration test 00-easy_25):
- *   The internal cooldown counter starts at 0 and COOLDOWN = 3.
- *   The counter increments each update until it reaches 3, then resets to 1.
- *   So: update 1→counter 1, update 2→2, update 3→3, update 4→GENERATE (counter=1).
- *   After the first generation, the period is exactly 3 updates.
+ * Sunflower: cost 20, damage 0, endurance 1.
+ *
+ * <p>Since part II it no longer adds suncoins by itself: it asks the world to
+ * generate a {@link Sun}, which the player must then catch.
+ *
+ * <p>Timing: the internal counter starts at 0 and the sun is generated when it
+ * reaches 3, so the first sun comes on the 4th update and then one every 3 updates.
  */
-class SunflowerTest {
+class SunflowerTest extends AbstractPlantTest {
 
-    private Game game;
-    private Position position;
-    private Sunflower sunflower;
-
-    @BeforeEach
-    void setUp() {
-        game = new Game(0L, Level.EASY);
-        position = new Position(0, 0);
-        sunflower = new Sunflower(position, game);
+    @Override
+    protected Plant create(Position position, GameWorld world) {
+        return new Sunflower(position, world);
     }
 
-    // ------------------------------------------------------------------ //
-    //  Initial state                                                       //
-    // ------------------------------------------------------------------ //
+    @Override
+    protected String expectedListName() {
+        return "[S]unflower";
+    }
 
-    @Test
-    void initiallyAlive() {
-        assertTrue(sunflower.isAlive());
+    @Override
+    protected String expectedSymbol() {
+        return "S";
+    }
+
+    @Override
+    protected int expectedCost() {
+        return 20;
+    }
+
+    @Override
+    protected int expectedDamage() {
+        return 0;
+    }
+
+    @Override
+    protected int expectedEndurance() {
+        return 1;
+    }
+
+    private void updateTimes(int n) {
+        for (int i = 0; i < n; i++) {
+            plant.update();
+        }
     }
 
     @Test
-    void isInPosition_matchesConstructorPosition() {
-        assertTrue(sunflower.isInPosition(position));
-    }
-
-    @Test
-    void isInPosition_differentPosition_returnsFalse() {
-        assertFalse(sunflower.isInPosition(new Position(1, 1)));
-    }
-
-    @Test
-    void cost_is20() {
+    void cost_constantIs20() {
         assertEquals(20, Sunflower.COST);
     }
 
     // ------------------------------------------------------------------ //
-    //  Damage and survival                                                 //
+    //  Sun generation                                                      //
     // ------------------------------------------------------------------ //
 
     @Test
-    void receiveZombieAttack_reducesHealth() {
-        // Sunflower has 1 health; any positive damage kills it.
-        // We verify isAlive() flips to false after taking lethal damage.
-        sunflower.receiveDamage(1);
-        assertFalse(sunflower.isAlive());
+    void noSun_before4thUpdate() {
+        updateTimes(3);
+        assertEquals(0, world.generateSunCalls);
     }
 
     @Test
-    void receiveZombieAttack_belowZero_notAlive() {
-        sunflower.receiveDamage(99);
-        assertFalse(sunflower.isAlive());
+    void firstSun_on4thUpdate() {
+        updateTimes(4);
+        assertEquals(1, world.generateSunCalls);
     }
 
     @Test
-    void noDamage_stillAlive() {
-        sunflower.receiveDamage(0);
-        assertTrue(sunflower.isAlive());
-    }
-
-    // ------------------------------------------------------------------ //
-    //  Coin generation timing                                              //
-    // ------------------------------------------------------------------ //
-
-    @Test
-    void firstCoinGeneration_happensAfterCooldownUpdates() {
-        int initialCoins = game.getCoins();
-
-        int updatesNeeded = 0;
-        for (int i = 0; i < 10; i++) {
-            sunflower.update();
-            updatesNeeded++;
-            if (game.getCoins() > initialCoins) break;
+    void afterTheFirstSun_oneSunEvery3Updates() {
+        updateTimes(4);
+        for (int sun = 2; sun <= 5; sun++) {
+            updateTimes(2);
+            assertEquals(sun - 1, world.generateSunCalls, "no sun 2 updates after the previous one");
+            updateTimes(1);
+            assertEquals(sun, world.generateSunCalls, "sun number " + sun + " after 3 updates");
         }
-
-        assertTrue(game.getCoins() > initialCoins,
-                "Sunflower should have generated coins within 10 updates");
-        assertEquals(initialCoins + 10, game.getCoins(),
-                "Sunflower should generate exactly 10 coins per cycle");
     }
 
     @Test
-    void subsequentCoinGeneration_periodIs3Updates() {
-        // Reset to a clean, known state before measuring the period:
-        // the unbounded search above may advance the counter by an unknown amount.
-        game = new Game(0L, Level.EASY);
-        sunflower = new Sunflower(position, game);
-        int coins = game.getCoins();
-        int i = 0;
-        while (game.getCoins() == coins && i < 10) { sunflower.update(); i++; }
-        // First generation happened at update i.
-
-        int coinsAfterFirst = game.getCoins();
-        int updatesSinceFirst = 0;
-        while (game.getCoins() == coinsAfterFirst && updatesSinceFirst < 5) {
-            sunflower.update();
-            updatesSinceFirst++;
-        }
-
-        assertEquals(3, updatesSinceFirst,
-                "Sunflower should generate coins every 3 updates after the first");
-        assertEquals(coinsAfterFirst + 10, game.getCoins());
+    void doesNotAddSuncoinsDirectly() {
+        updateTimes(10);
+        assertEquals(0, world.generatedCoins,
+                "suncoins must only come from catching suns");
     }
 
     @Test
-    void deadSunflower_doesNotGenerateCoins() {
-        sunflower.receiveDamage(1); // kill sunflower
-        assertFalse(sunflower.isAlive());
-
-        int coinsBefore = game.getCoins();
-        for (int i = 0; i < 10; i++) sunflower.update();
-
-        assertEquals(coinsBefore, game.getCoins(),
-                "Dead sunflower must not generate coins");
+    void deadSunflower_doesNotGenerateSuns() {
+        plant.receiveZombieAttack(1);
+        updateTimes(10);
+        assertEquals(0, world.generateSunCalls);
     }
 
-    // ------------------------------------------------------------------ //
-    //  Icon format                                                         //
-    // ------------------------------------------------------------------ //
-
     @Test
-    void getIcon_containsHealthValue() {
-        String icon = sunflower.getIcon();
-        assertNotNull(icon);
-        // Icon should reflect current health (format "S[01]" or similar)
-        assertTrue(icon.contains("S") || icon.contains("s"),
-                "Icon should identify the plant type");
+    void generatingASun_doesNotHurtTheSunflower() {
+        updateTimes(8);
+        assertTrue(plant.isAlive());
     }
 }
