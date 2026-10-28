@@ -827,27 +827,27 @@ method argument (i.e. uses overloading which is resolved at compile time).
 
 For example, to implement the case of the Zombie with a shield:
 ```java
-  public class Peashooter extends Plant {
+public class Peashooter extends Plant {
     //...
 
     public void update() {
-      //...
-      GameItem item = game.getNextZombieOnRow(col, row);
-      if(item != null )
-        item.receiveInteraction(this);
-      //...
+        //...
+        GameItem item = game.getNextZombieOnRow(col, row);
+        if(item != null )
+            item.receiveInteraction(this);
+        //...
     }
-  }
+}
   
-  public class ShieldedZombie extends Zombie {
+public class ShieldedZombie extends Zombie {
     //...
 
     public receiveInteraction(Peashooter peashooter) {
-      //...
-      peashooter.receiveInteraction(this)
-      //...
+        //...
+        peashooter.receiveInteraction(this)
+        //...
     }
-  }
+}
 
 ```
 Note that the `this` argument of the call to `receiveInteraction` in Peashooter and of the call
