@@ -531,11 +531,12 @@ we propose to use the `ArrayList` class[^11], typed using the `List` interface, 
 ```java
 public class GameObjectContainer {
 
-	private List<GameObject> gameObjects;
+    private List<GameObject> gameObjects;
 
-	public GameObjectContainer() {
-		gameObjects = new ArrayList<>();
-	}
+    public GameObjectContainer() {
+        gameObjects = new ArrayList<>();
+    }
+
     //...
 ```
 
