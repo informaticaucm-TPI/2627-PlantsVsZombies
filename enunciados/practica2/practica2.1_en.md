@@ -609,11 +609,11 @@ The mechanism is pratically the same as that of the `Command` pattern. The class
 `ZombieFactory`, should be placed in the ``gameobjects`` package; both are very similar to the `CommandGenerator`
 class. The former has the following method:
 ```java
-	public static Plant parse (String objWords[], GameWorld game);
+    public static Plant parse (String objWords[], GameWorld game);
 ```
 and the latter has the following method:
 ```java
-	public static Zombie parse (String objWords[], GameWorld game);
+    public static Zombie parse (String objWords[], GameWorld game);
 ```
 where the array of strings `objWords` contains an external representation (split into tokens). An invocation of this method that creates
 the plant or zombie whose external representation (split into tokens) is contained in `objWords` is as follows:
@@ -626,16 +626,16 @@ Note that the code of the factories is generic (i.e. does not know the dynamic t
 available plants in the plant factory:
 ```java
 private static final List<GameObject> availablePlants = List.of(
-	new Sunflower(),
-	new Peashooter()
-	// more plant types will be added later
+    new Sunflower(),
+    new Peashooter()
+    // more plant types will be added later
 );
 ```
 and the list of available zombies in the zombie factory:
 ```java
 private static final List<GameObject> availableZombies = List.of(
-	new CommonZombie()
-	// more zombie types will be added later
+    new CommonZombie()
+    // more zombie types will be added later
 );
 ```
 both of which are similar to the list of available commands in the `CommandGenerator` class. The elements of these lists
