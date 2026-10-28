@@ -817,8 +817,8 @@ interaction depends on the dynamic type of one of the participants and the stati
 In our asymmetric implementation,
 
 - firstly, the interaction method caller passes itself as an argument (with a static type that coincides
-with its dynamic type) to the interaction method call; this argument will be used to execute a
-*callback*
+with its dynamic type in the simplest case that we consider here) to the interaction method call;
+this argument will be used to execute a *callback*
 - secondly, the implementation of the interaction depends on the dynamic type of the method owner
 (i.e. uses overwriting / dynamic binding which is resolved at execution time) and the static type of the
 method argument (i.e. uses overloading which is resolved at compile time).
