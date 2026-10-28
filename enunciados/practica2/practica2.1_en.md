@@ -151,7 +151,7 @@ The following classes are involved in our application of the *command pattern*:
 	    super(NAME, SHORTCUT, DETAILS, HELP);
 	  }
 
-    // Implementation of the execute method
+      // Implementation of the execute method
   }
   ```
   where the corresponding constants of the `Messages` class have the following values:
