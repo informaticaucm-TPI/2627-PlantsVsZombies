@@ -860,7 +860,7 @@ However, we consider that the advantages outweigh the disadvantages and that thi
 mechanism to learn.
 
 The effect of this "semi" double dispatch on the game objects is to replace a set of methods
-of the type `receiveInteractionFromConcreteGameObject` with a set of methods of the type
+of the type `receiveInteractionFromConcreteGameObject()` with a set of methods of the type
 `receiveInteraction(concreteGameObject)`. We must therefore change the `GameItem` interface
 accordingly (we also take the chance to extend it with some query methods):
 
