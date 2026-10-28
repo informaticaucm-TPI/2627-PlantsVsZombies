@@ -142,24 +142,24 @@ The following classes are involved in our application of the *command pattern*:
   ```java
   public class HelpCommand extends NoParamsCommand {
 
-	private static final String NAME = Messages.COMMAND_HELP_NAME;
-	private static final String SHORTCUT = Messages.COMMAND_HELP_SHORTCUT;
-	private static final String DETAILS = Messages.COMMAND_HELP_DETAILS;
-	private static final String HELP = Messages.COMMAND_HELP_HELP;
+	  private static final String NAME = Messages.COMMAND_HELP_NAME;
+	  private static final String SHORTCUT = Messages.COMMAND_HELP_SHORTCUT;
+	  private static final String DETAILS = Messages.COMMAND_HELP_DETAILS;
+	  private static final String HELP = Messages.COMMAND_HELP_HELP;
 
-	public HelpCommand(){
+	  public HelpCommand(){
 	    super(NAME, SHORTCUT, DETAILS, HELP);
-	}
+	  }
 
     // Implementation of the execute method
   }
   ```
   where the corresponding constants of the `Messages` class have the following values:
   ```java
-  public static final String COMMAND_HELP_NAME = "help";
-	public static final String COMMAND_HELP_SHORTCUT = "h";
-	public static final String COMMAND_HELP_DETAILS = "[h]elp";
-	public static final String COMMAND_HELP_HELP = "print this help message";
+    public static final String COMMAND_HELP_NAME = "help";
+	  public static final String COMMAND_HELP_SHORTCUT = "h";
+	  public static final String COMMAND_HELP_DETAILS = "[h]elp";
+	  public static final String COMMAND_HELP_HELP = "print this help message";
   ```
   
   Each concrete command class has (at least) the following four methods (note that they may be inherited):
