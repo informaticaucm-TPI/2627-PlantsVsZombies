@@ -10,7 +10,7 @@
 		- [Delegating functionality of the `game` to the `container`](#game-object-container)
 		- [Game object factories](#game-object-factories)
 		- [The `GameItem` interface and callbacks](#game-item-interface)
-		- [Generalizing the interactions between game objects](#generalizacion-interacciones)
+		- [Generalising the interactions between game objects](#generalising interactions)
 	- [Testing](#pruebas)
 <!-- TOC end -->
 
@@ -796,32 +796,32 @@ since the method implementing the interaction must belong to one of the objects 
 interaction involving two parties, one object (the caller of the method)
 initiates the interaction and the other (the callee of the method) receives it. In a game where
 one game object is attacking another, which one initiates the interaction is clear but this may
-not always be the case. Ideally, the run-time selection of the code to be executed (this selection
-being known as *dispatch*) for an interaction would depend on the dynamic
+not always be the case. Ideally, the run-time selection of the code to be executed for an
+interaction (this selection being known as *dispatch*) would depend on the dynamic
 type of *both* of the objects involved in that interaction. This is known as ***double-dispatch***.
 Taking into account the asymmetry in the implementation of interactions using method calls,
 could we implement double dispatch in Java in the following manner?:
 
-- firstly by having the receiveInteraction method caller pass itself as an argument (with a generic
-static type such as `GameItem`) to the interaction method call
+- firstly by having the caller of the `receiveInteraction` method pass itself as an argument
+  (with a generic static type such as `GameItem`) to the interaction method call
 - secondly, by having the dispatch of the receiveInteraction method depend not only on the dynamic
-type of the method owner, the callee, i.e. the usual dynamic-binding case, but also on the dynamic type
-of the method argument, the caller  (or, more generally, on that of one of the method arguments, for
-double-dispatch, or on that of several of the method arguments, for multi-dispatch).
+  type of the method owner, the callee, i.e. the usual dynamic-binding case, but also on the dynamic type
+  of the method argument, the caller  (or, more generally, on that of one of the method arguments, for
+  double-dispatch, or on that of several of the method arguments, for multi-dispatch).
 
 The answer to this question is "no", since the second step would require that method arguments be
-covariant (see the slides about covariance and contravariance), which is not the case in Java so this
-implementation is not possible. Moreover, for type-safety reasons, covariant arguments
+covariant (see the slides about covariance and contravariance), which is not the case in Java.
+Moreover, for type-safety reasons, covariant arguments
 are not considered desirable. However, we can implement a *"semi" double dispatch* in Java, in which the
 interaction depends on the dynamic type of one of the participants and the static type of the other.
 In our asymmetric implementation,
 
 - firstly, the interaction method caller passes itself as an argument (with a static type that coincides
-with its dynamic type) to the interaction method call
+with its dynamic type) to the interaction method call; this argument will be used to execute a
+*callback*
 - secondly, the implementation of the interaction depends on the dynamic type of the method owner
 (i.e. uses overwriting / dynamic binding which is resolved at execution time) and the static type of the
-method argument (i.e. uses overloading which is resolved at compile time). This will involve a *callback*
-such as the one in the following code:
+method argument (i.e. uses overloading which is resolved at compile time).
 ```java
   public class Peashooter extends Plant {
     //...
