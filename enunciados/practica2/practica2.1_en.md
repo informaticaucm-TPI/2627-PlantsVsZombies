@@ -371,21 +371,21 @@ The `Game` class must then implement these interfaces:
 ```java
 public class Game implements GameStatus, GameWorld, GameModel {
 
-  public static final int INITIAL_COINS = 50;
+    public static final int INITIAL_COINS = 50;
 
-  private GameObjectContainer container;
+    private GameObjectContainer container;
 
-  // Methods declared in GameModel
-  // ...
+    // Methods declared in GameModel
+    // ...
 	
-  // Methods declared in GameWorld
-  // ...
+    // Methods declared in GameWorld
+    // ...
 	
-  // Methods declared in GameStatus
-  // ...
+    // Methods declared in GameStatus
+    // ...
 	
-  // Other methods
-  // ...
+    // Other methods
+    // ...
 }
 ```
 
