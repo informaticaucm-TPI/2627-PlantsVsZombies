@@ -853,9 +853,9 @@ of the owning object, so the method in which it is called (here `update` of Peas
 
 The disadvantages of using this "semi" double-dispatch are as follows:
 - the use of overloading instead of overwriting may involve duplication of code
-- passing an object as an argument (here, the object referred to by `this`) typed using its
-  static type instead of using a restricted type such as `GameItem` is, strictly speaking,
-  breaking encapsulation.
+- passing an object as an argument (here, the object referred to by `this`) with its static
+  type coinciding with its dynamic type instead of using a restrictive type such as `GameItem`
+  for its static type is, strictly speaking, breaking encapsulation.
 However, we consider that the advantages outweigh the disadvantages and that this is a useful
 mechanism to learn.
 
