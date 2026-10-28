@@ -10,7 +10,7 @@
 		- [Delegating functionality of the `game` to the `container`](#game-object-container)
 		- [Game object factories](#game-object-factories)
 		- [The `GameItem` interface and callbacks](#game-item-interface)
-		- [Generalising the interactions between game objects](#generalising interactions)
+		- [Generalising the interactions between game objects](#generalising-interactions)
 	- [Testing](#pruebas)
 <!-- TOC end -->
 
