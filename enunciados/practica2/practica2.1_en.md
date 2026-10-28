@@ -332,39 +332,39 @@ not declared on the corresponding interface[^8]. To that end, we define the foll
 
 - `GameWorld` to represent the *Model*'s internal view of the services offered by the `Game` class.
 
-```java
-public interface GameWorld {
+  ```java
+  public interface GameWorld {
 
-  public static final int NUM_ROWS = 4;
-  public static final int NUM_COLS = 8;
+    public static final int NUM_ROWS = 4;
+    public static final int NUM_COLS = 8;
 
-  boolean isEmpty(Position position);
-  boolean isInsideBoard(Position position);
+    boolean isEmpty(Position position);
+    boolean isInsideBoard(Position position);
 
-  // ...
-}
-```
+    // ...
+  }
+  ```
 
 - `GameStatus` to represent the *View*'s view of the services offered by the `Game` class:
 
-```java
-public interface GameStatus {
-  int getCycles();
-  // ...
-}
-```
+  ```java
+  public interface GameStatus {
+    int getCycles();
+    // ...
+  }
+  ```
 
 - `GameModel` to represent the *Controller*'s view of the services offered by the `Game` class:
 
-```java
-public interface GameModel {
+  ```java
+  public interface GameModel {
 
-  public boolean isFinished();
-  public void update();
-  public void reset();
-  // ...
-}
-```
+    public boolean isFinished();
+    public void update();
+    public void reset();
+    // ...
+  }
+  ```
 
 The `Game` class must then implement these interfaces:
 
