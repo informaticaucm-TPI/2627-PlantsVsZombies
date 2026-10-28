@@ -822,6 +822,8 @@ with its dynamic type) to the interaction method call; this argument will be use
 - secondly, the implementation of the interaction depends on the dynamic type of the method owner
 (i.e. uses overwriting / dynamic binding which is resolved at execution time) and the static type of the
 method argument (i.e. uses overloading which is resolved at compile time).
+
+For example, to implement the case of the Zombie with a shield:
 ```java
   public class Peashooter extends Plant {
     //...
