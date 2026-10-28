@@ -116,7 +116,7 @@ The following classes are involved in our application of the *command pattern*:
 - `AbstractCommmand`: an abstract class that encapsulates the functionality common to all the concrete
    commands. It has four attributes of type `String` that are initialised in its constructor -- `name`,
    `shortcut` (the abbreviated name), `details` (the initial part of its help message), `help`
-   (the details of its help message) -- and *getter* methods for at least `name` and `shortcut` whose
+   (the rest of its help message) -- and *getter* methods for at least `name` and `shortcut` whose
    values are needed by the `parse` methods of the subclasses (instead of making these attributes
    `protected`).
 
@@ -291,7 +291,7 @@ The following is a skeleton of this code [^7]:
 public class CommandGenerator {
 
     private static final List<Command> AVAILABLE_COMMANDS = List.of(
-        new UpdateCommand(),
+        new NoneCommand(),
         new ResetCommand(),
         new HelpCommand(),
         new ExitCommand(),
