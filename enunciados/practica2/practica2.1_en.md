@@ -156,7 +156,7 @@ The following classes are involved in our application of the *command pattern*:
   ```
   where the corresponding constants of the `Messages` class have the following values:
   ```java
-  public static final String COMMAND_HELP_NAME = "help";
+    public static final String COMMAND_HELP_NAME = "help";
 	public static final String COMMAND_HELP_SHORTCUT = "h";
 	public static final String COMMAND_HELP_DETAILS = "[h]elp";
 	public static final String COMMAND_HELP_HELP = "print this help message";
