@@ -804,7 +804,7 @@ could we implement double dispatch in Java in the following manner?:
 
 - firstly by having the caller of the `receiveInteraction` method pass itself as an argument
   (with a generic static type such as `GameItem`) to the interaction method call
-- secondly, by having the dispatch of the receiveInteraction method depend not only on the dynamic
+- secondly, by having the dispatch of the `receiveInteraction` method depend not only on the dynamic
   type of the method owner, the callee, i.e. the usual dynamic-binding case, but also on the dynamic type
   of the method argument, the caller  (or, more generally, on that of one of the method arguments, for
   double-dispatch, or on that of several of the method arguments, for multi-dispatch).
