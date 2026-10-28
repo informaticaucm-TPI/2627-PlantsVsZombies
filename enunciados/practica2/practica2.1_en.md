@@ -784,7 +784,98 @@ of the **SOLID** design principles.
 <!-- TOC --><a name="generalising-interactions"></a>
 ### Generalising the interactions between game objects
 
-*** To be added shortly ***
+*The modifications described in this section are not mandatory, in the sense that it is possible
+to obtain the top grade without implementing them, but will be assessed, in the sense that their
+implementation may contribute to improving a grade which is not the top grade.*
+
+In the general case, interactions may affect both of the objects involved in the interaction. For
+example, we could imagine introducing a zombie with a shield which bounces peas back to the peashooter
+that fired them, damaging it in the process. How could we accomplish this? Since interactions must be
+implemented using method calls, it is inevitable that they are not implemented in a symmetric manner,
+since the method implementing the interaction must belong to one of the objects involved. In an
+interaction involving two parties, one object (the caller of the method)
+initiates the interaction and the other (the callee of the method) receives it. In a game where
+one game object is attacking another, which one initiates the interaction is clear but this may
+not always be the case. Ideally, the run-time selection of the code to be executed (this selection
+being known as *dispatch*) for an interaction would depend on the dynamic
+type of *both* of the objects involved in that interaction. This is known as ***double-dispatch***.
+Taking into account the asymmetry in the implementation of interactions using method calls,
+could we implement double dispatch in Java in the following manner?:
+
+- firstly by having the receiveInteraction method caller pass itself as an argument (with a generic
+static type such as `GameItem`) to the interaction method call
+- secondly, by having the dispatch of the receiveInteraction method depend not only on the dynamic
+type of the method owner, the callee, i.e. the usual dynamic-binding case, but also on the dynamic type
+of the method argument, the caller  (or, more generally, on that of one of the method arguments, for
+double-dispatch, or on that of several of the method arguments, for multi-dispatch).
+
+The answer to this question is "no", since the second step would require that method arguments be
+covariant (see the slides about covariance and contravariance), which is not the case in Java so this
+implementation is not possible. Moreover, for type-safety reasons, covariant arguments
+are not considered desirable. However, we can implement a *"semi" double dispatch* in Java, in which the
+interaction depends on the dynamic type of one of the participants and the static type of the other.
+In our asymmetric implementation,
+
+- firstly, the interaction method caller passes itself as an argument (with a static type that coincides
+with its dynamic type) to the interaction method call
+- secondly, the implementation of the interaction depends on the dynamic type of the method owner
+(i.e. uses overwriting / dynamic binding which is resolved at execution time) and the static type of the
+method argument (i.e. uses overloading which is resolved at compile time). This will involve a *callback*
+such as the one in the following code:
+```java
+  public class Peashooter extends Plant {
+    //...
+
+    public void update() {
+      //...
+      GameItem item = game.getNextZombieOnRow(col, row);
+      if(item != null )
+        item.receiveInteraction(this);
+      //...
+    }
+  }
+  
+  public class ShieldedZombie extends Zombie {
+    //...
+
+    public receiveInteraction(Peashooter peashooter) {
+      //...
+      peashooter.receiveInteraction(this)
+      //...
+    }
+  }
+
+```
+Note that the `this` argument of the call to `receiveInteraction` in Peashooter and of the call
+to `receiveInteraction` in ShieldedZombie will be resolved at compile time, using the static type
+of the owning object, so the method in which it is called (here `update` of Peashooter and
+`receiveInteraction` of `ShieldedZombie`) cannot be inherited from a superclass.
+
+The disadvantages of using this "semi" double-dispatch are as follows:
+- the use of overloading instead of overwriting may involve duplication of code
+- passing an object as an argument (here, the object referred to by `this`) typed using its
+  static type instead of using a restricted type such as `GameItem` is, strictly speaking,
+  breaking encapsulation.
+However, we consider that the advantages outweigh the disadvantages and that this is a useful
+mechanism to learn.
+
+The effect of this "semi" double dispatch on the game objects is to replace a set of methods
+of the type `receiveInteractionFromConcreteGameObject` with a set of methods of the type
+`receiveInteraction(concreteGameObject)`. We must therefore change the `GameItem` interface
+accordingly (we also take the chance to extend it with some query methods):
+
+```java
+public interface GameItem {
+
+  public boolean isAlive();
+  public boolean isInPosition(Position pos);
+
+  // we could use subclasses of Plant and Zombie for more specific interactions
+  public boolean receiveInteraction(Zombie zombie);
+  public boolean receiveInteraction(Plant plant);
+}
+```
+
 
 <!-- TOC --><a name="pruebas"></a>
 ## Testing
