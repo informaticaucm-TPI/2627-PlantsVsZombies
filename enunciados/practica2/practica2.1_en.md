@@ -335,13 +335,13 @@ not declared on the corresponding interface[^8]. To that end, we define the foll
   ```java
   public interface GameWorld {
 
-    public static final int NUM_ROWS = 4;
-    public static final int NUM_COLS = 8;
+      public static final int NUM_ROWS = 4;
+      public static final int NUM_COLS = 8;
 
-    boolean isEmpty(Position position);
-    boolean isInsideBoard(Position position);
+      boolean isEmpty(Position position);
+      boolean isInsideBoard(Position position);
 
-    // ...
+      // ...
   }
   ```
 
@@ -349,8 +349,8 @@ not declared on the corresponding interface[^8]. To that end, we define the foll
 
   ```java
   public interface GameStatus {
-    int getCycles();
-    // ...
+      int getCycles();
+      // ...
   }
   ```
 
@@ -359,10 +359,10 @@ not declared on the corresponding interface[^8]. To that end, we define the foll
   ```java
   public interface GameModel {
 
-    public boolean isFinished();
-    public void update();
-    public void reset();
-    // ...
+      public boolean isFinished();
+      public void update();
+      public void reset();
+      // ...
   }
   ```
 
