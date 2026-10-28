@@ -450,31 +450,31 @@ by this class is described below.
 ```java
 public abstract class GameObject implements GameItem {
 
-  protected GameWorld game;
-  protected Position position;
+    protected GameWorld game;
+    protected Position position;
 
-  GameObject(GameWorld game, Position p) {
-    this.game = game;
-    this.position = p;
-  }
+    GameObject(GameWorld game, Position p) {
+        this.game = game;
+        this.position = p;
+    }
 
-  public boolean isInPosition(Position other) {
-    return this.position.equals(other);
-  }
+    public boolean isInPosition(Position other) {
+        return this.position.equals(other);
+    }
 
-  public Position getPosition() { ... }
+    public Position getPosition() { ... }
 
-  abstract public String getIcon();
+    abstract public String getIcon();
 
-  abstract public String getDescription();
+    abstract public String getDescription();
 
-  abstract public boolean isAlive();
+    abstract public boolean isAlive();
 
-  abstract public void onEnter();
+    abstract public void onEnter();
 
-  abstract public void onExit();
+    abstract public void onExit();
 
-  // ...
+    // ...
 }
 ```
 
@@ -538,6 +538,7 @@ public class GameObjectContainer {
     }
 
     //...
+}
 ```
 
 Notice that, thanks to the use of the `GameObject` abstract class and associated inheritance hierarchy:
