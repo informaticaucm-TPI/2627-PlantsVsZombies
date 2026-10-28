@@ -871,12 +871,12 @@ accordingly (we also take the chance to extend it with some query methods):
 ```java
 public interface GameItem {
 
-  public boolean isAlive();
-  public boolean isInPosition(Position pos);
+    public boolean isAlive();
+    public boolean isInPosition(Position pos);
 
-  // we could use subclasses of Plant and Zombie for more specific interactions
-  public boolean receiveInteraction(Zombie zombie);
-  public boolean receiveInteraction(Plant plant);
+    // we could use subclasses of Plant and Zombie for more specific interactions
+    public boolean receiveInteraction(Zombie zombie);
+    public boolean receiveInteraction(Plant plant);
 }
 ```
 
