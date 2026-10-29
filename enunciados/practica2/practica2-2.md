@@ -405,17 +405,15 @@ resultado de la explosión, también explotará el `ExplosiveZombie` de (5, 3) a
      ────────────── ────────────── ────────────── ────────────── ────────────── ────────────── ────────────── ────────────── 
 ```
 
-Para lograr este comportamiento vamos a implementar una pila de `GameAction`s que se ejecutaran al comienzo y al final
+Para lograr este comportamiento vamos a implementar una cola de `GameAction`s que se ejecutaran al comienzo y al final
 de cada ciclo del juego. De este modo, cuando un objeto de juego va a explotar, en vez de ejecutarse inmediatamente, se
-apila una instancia de `ExplosionAction` que se ejecutará cuando sea necesario. Como resultado de esa ejecución, es
-posible que otros objetos apilen otros efectos, que a su vez serán ejecutados una vez finalizada la ejecución del efecto
-actual. Como resultado adicional, la pila de acciones de juego nos permite definir un orden consistente en la ejecución
-de las acciones que nos facilita la depuración de la aplicación.
+añade a la cola una instancia de `ExplosionAction` que se ejecutará cuando sea necesario. Como resultado de esa ejecución, 
+es posible que otros objetos añadan otros efectos, que a su vez serán ejecutados una vez finalizada la ejecución de los 
+efectos ya presentes. Como resultado adicional, la cola de acciones de juego nos permite definir un orden consistente en 
+la ejecución de las acciones que nos facilita la depuración de la aplicación.
 
-Pese a que existe la clase `java.util.Stack` [su propia documentación](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Stack.html) 
-nos indica que es más recomendable utilizar una clase que
-implemente la interfaz `java.util.Deque` por lo que en nuestro caso hemos decidido utilizar la clase
-`java.util.ArrayDeque`.
+Ppara ello podemos utilizar cualquier clase que implemente la interfaz `java.util.Deque`. En nuestro caso hemos decidido 
+utilizar la clase `java.util.ArrayDeque`.
 
 A continuación mostramos un extracto del código necesario para poder gestionar las `GameAction` dentro de `Game`.
 
@@ -459,7 +457,7 @@ public void pushAction(GameAction gameAction) {
 
 private void executePendingActions() {
   while (!this.actions.isEmpty()) {
-    GameAction action = this.actions.removeLast();
+    GameAction action = this.actions.removeFirst();
     action.execute(this);
   }
 }
