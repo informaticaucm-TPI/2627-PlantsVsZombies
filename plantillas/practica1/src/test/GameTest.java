@@ -1,4 +1,3 @@
-//package pvz.logic;
 package test;
 
 import org.junit.jupiter.api.BeforeEach;
