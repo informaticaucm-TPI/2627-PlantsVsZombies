@@ -1,17 +1,20 @@
 package pvz.view;
 
 import static pvz.view.Messages.PROMPT;
+import static pvz.view.Messages.SUN_SYMBOL;
 import static pvz.view.Messages.debug;
 import static pvz.view.Messages.error;
-import static pvz.utils.StringUtils.*;
+import static utils.StringUtils.*;
 
 import pvz.logic.Game;
 import pvz.logic.GameWorld;
 import pvz.logic.GameStatus;
-import pvz.utils.Position;
-import pvz.utils.StringUtils;
+import utils.Position;
+import utils.StringUtils;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * View component of the game (the V in MVC).
@@ -63,9 +66,52 @@ public class GamePrinter implements GameView {
 	private String getInfo() {
 		StringBuilder buffer = new StringBuilder();
 
-		// TODO fill your code
-
+		buffer.append(String.format(Messages.NUMBER_OF_CYCLES, this.game.getCycles()));
+		buffer.append(String.format(Messages.NUMBER_OF_COINS, this.game.getCoins()));
+		buffer.append(String.format(Messages.REMAINING_ZOMBIES, this.game.getRemainingZombies()));
+		buffer.append(String.format(Messages.GENERATED_SUNS, this.game.getGeneratedCoins()));
+		buffer.append(String.format(Messages.CAUGHT_SUNS, this.game.getCaughtCoins()));
 		return buffer.toString();
+	}
+
+	/**
+	 * Prevents to print several suns in the same cell
+	 *
+	 * @param repr The string representation of the objects of the cell,
+	 *             which may contain several suns. Only the first one will be kept
+	 */
+	private String filterRepeatedSuns(String repr) {
+
+		// Build the pattern that represents a Sun
+		Pattern sunRepresentationPattern = Pattern.compile(Messages.GAME_OBJECT_ICON
+			.formatted("\\" + SUN_SYMBOL, 0)
+			.replace("[", "\\[")
+			.replace("]", "\\]")
+			.replace("00", "\\d+")
+		);
+
+		Matcher matcher = sunRepresentationPattern.matcher(repr);
+
+		if (matcher.find()) {
+			StringBuilder sb = new StringBuilder();
+
+			// 1. Add everything up to the end of the first match (includes the match)
+			sb.append(repr, 0, matcher.end());
+
+			int lastEnd = matcher.end();
+			// 2. Loop through subsequent matches and keep ONLY the non-matching text between them
+			while (matcher.find()) {
+				sb.append(repr, lastEnd, matcher.start());
+				lastEnd = matcher.end();
+			}
+			// 3. Append any remaining non-matching text at the end of the string
+			sb.append(repr.substring(lastEnd));
+
+			return sb.toString();
+		}
+
+		// If no match was found, return the original text unchanged
+		return repr;
 	}
 
 	/**
@@ -84,7 +130,8 @@ public class GamePrinter implements GameView {
 		for (int row = 0; row < GameWorld.NUM_ROWS; row++) {
 			str.append(MARGIN).append(VERTICAL_DELIMITER);
 			for (int col = 0; col < GameWorld.NUM_COLS; col++) {
-				str.append(StringUtils.centre(game.positionToString(new Position(row, col)), CELL_SIZE)).append(VERTICAL_DELIMITER);
+				String objetsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, col)));
+				str.append(StringUtils.centre(objetsInPosition, CELL_SIZE)).append(VERTICAL_DELIMITER);
 			}
 			str.append(INDENTED_ROW_BORDER);
 		}
@@ -97,8 +144,16 @@ public class GamePrinter implements GameView {
 	 */
 	@Override
 	public void showEndMessage() {
-		StringBuilder buffer = new StringBuilder(Messages.GAME_OVER);
-		// TODO fill your code
+		StringBuilder buffer = new StringBuilder(Messages.GAME_OVER + "\n");
+
+		if(game.playerWins()) {
+			buffer.append(Messages.PLAYER_WINS);
+		} else if(game.playerQuits()) {
+			buffer.append(Messages.PLAYER_QUITS);
+		} else {
+			buffer.append(Messages.ZOMBIES_WIN);
+		}
+
 		System.out.println(buffer);
 	}
 
