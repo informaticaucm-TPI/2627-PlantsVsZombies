@@ -197,7 +197,7 @@ los comandos concretos los que implementan sus funcionalidades específicas:
   si es necesario, mostrar algo por la pantalla (es decir, ordenar a `view` que repite el tablero o muestre un mensaje de ayuda).
 - El método `create(String[])` devuelve una instancia del comando concreto. Como cada comando procesa sus propios
   parámetros, este método devolverá `this` o creará una nueva instancia de la misma clase. En el caso de que los
-  argumentos introducidos por el usuario no sean válidos para el comando, el método `create(String[])` devolverá `null`.
+  argumentos introducidos por el usuario no sean válidos para el comando, el método `create(String[])` devolverá un comando con un mensaje de error.
 
 Sin embargo, hay métodos que se pueden implementar directamente en `Command` como ``protected String getName()/getShortcut()` o 
 `public String getDetails()/getHelp()`.
