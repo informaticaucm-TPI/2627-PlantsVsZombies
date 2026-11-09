@@ -9,7 +9,7 @@
     + [The explosive zombie](#explosive-zombie)
   * [Introducing new commands](#commands)
     + [Debugging commands](#debugging-commands)
-    + [Reset command](#reset-command)
+    + [Modification of the `reset` command](#reset-command)
 - [Changing the mechanism for obtaining suncoins](#suncoin-mechanism)
   * [Description](#detalles-de-la-mecánica)
   * [Implementation](#implementación-de-la-mecánica)
