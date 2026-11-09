@@ -266,7 +266,7 @@ specified in the catch command, all of them are caught by a single use of the co
 > Note: The implementation of the `GamePrinter` class provided in the new template has been modified
 to print only one sun if there are multiple suns in a given position [^1].
 
-[1]: In fact, the implementation also allows suns to share positions with zombies and plants but
+[^1]: In fact, the implementation also allows suns to share positions with zombies and plants but
 we will not use that possibility.
 
 Suns are represented by the string `*[XX]` (where `XX` are the cycles left before that sun will
@@ -332,18 +332,18 @@ In this section we provide some extra implementation details.
 A good way to implement the counter of
 generated suns and that of caught suns is as static attributes of the `Sun` class,
 which can be updated in the `onEnter()` method and
-either in the `onExit()` method [^2] or in the method of the `Sun` class that implements a sun being
-caught (which should be declared in the `GameItem` interface)[^3]. Remember to
+either in the `onExit()` method or in the method of the `Sun` class that implements a sun being
+caught (which should be declared in the `GameItem` interface)[^2]. Remember to
 reset these counters when the `reset` command is used.
 
-[^2]: Who should call the `onExit` life-cycle method? A good implementation would be to have a
+Who should call the `onExit` life-cycle method? A good implementation would be to have a
 `removeDead` method in the `container`, executed at the end of the update phase of each cycle, which
 traverses the `gameObject` list and calls the
 `onExit` method of objects that are no longer alive, before removing them from the list.
 Who should call the `onEnter` life-cycle method? It should be called by the code that adds game objects
 to the board.
 
-[^3]: If you have not already done so, you could also implement the counter of the number of zombies
+[^2]: If you have not already done so, you could also implement the counter of the number of zombies
 on the board via a static attribute of the `Zombie` class in a similar way (instead of storing this
 counter in a method of the ZombieManager and having to update it via the game delegating to the
 zombie manager on receiving an "I'm dead"-call from a zombie).
