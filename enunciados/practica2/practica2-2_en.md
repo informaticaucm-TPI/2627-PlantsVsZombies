@@ -42,7 +42,7 @@ since it explains all the functionality that you are required to implement befor
 about how you should implement it.
 
 <!-- TOC --><a name="extensiones-básicas-del-juego"></a>
-# Basic extensions of the game
+# Basic extensions to the game
 
 Having refactored the code in Part I of this assignment in order to make it more
 extendable, among other desirable properties, we now add new functionality by extending both of the
