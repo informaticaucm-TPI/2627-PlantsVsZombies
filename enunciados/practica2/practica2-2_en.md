@@ -14,7 +14,7 @@
   * [Description](#detalles-de-la-mecánica)
   * [Implementation](#implementación-de-la-mecánica)
 - [Implementation details](#detalles-de-implementación)
-    + [Changing the mechanism for obtaining suncoins](#suncoin-mechanism)
+    + [Implementation of the suncoin mechanism](#suncoin-mechanism-details)
       - [Counting generated suns and caught suns](#soles-generados-y-soles-cogidos)
       - [Ensuring only one catch on each cycle](#catchcommand)
   * [The `GameAction` interface and the `ExplosionAction` class](#la-interfaz-gameactions-y-las-acciones-explosionaction)
@@ -206,7 +206,7 @@ list[Z]ombies: print the list of available zombies
 ```
 
 <!-- TOC --><a name="suncoin-mechanism"></a>
-# Changing the mechanism for obtaining suncoins.
+# Changing the mechanism for obtaining suncoins
 
 Until now, the sunflowers updated
 the number of suncoins automatically after a certain number of cycles. We now modify the mechanism
@@ -323,7 +323,8 @@ sun's countdown will be updated.
 
 In this section we provide some extra implementation details.
 
-## Implementation of the sun mechanism
+<!-- TOC --><a name="suncoin-mechanism-details"></a>
+## Implementation of the suncoin mechanism
 
 <!-- TOC --><a name="soles-generados-y-soles-cogidos"></a>
 ### Counting generated suns and caught suns
