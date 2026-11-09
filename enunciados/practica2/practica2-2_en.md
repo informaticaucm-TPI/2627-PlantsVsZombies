@@ -160,7 +160,7 @@ The symbol used in its textual representation is the string `Ez`.
 ## Introducing new commands
 
 <!-- TOC --><a name="debugging-commands"></a>
-### Debugging commands: `addZombie`, 'listZombie`, `cheatPlant`
+### Debugging commands: `addZombie`, `listZombie`, `cheatPlant`
 We now extend the command hierarchy by adding new commands. You should already have added the
 two debugging commands `addZombie` and `listZombie` in the first part of this assignment. With
 the new zombies added in the previous section, the output of the latter command should be as
