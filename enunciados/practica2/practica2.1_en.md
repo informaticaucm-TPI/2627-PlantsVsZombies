@@ -1,5 +1,5 @@
 <!-- TOC start -->
-- [Práctica 2 - Parte I: Plants vs Zombies Refactored](#assignment-2---part-i-pvz-refactored)
+- [Assignment 2 - Part I: Plants vs Zombies Refactored](#assignment-2---part-i-pvz-refactored)
 	- [Introduction](#introduction)
 		- [The Model-View-Controller (MVC) architectural pattern](#mvc-pattern)
 		- [Overview of the assignment](#overview)
