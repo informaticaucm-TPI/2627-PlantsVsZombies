@@ -361,7 +361,7 @@ that cycle. We could use a boolean attribute of the `game` for this purpose.
 A correct implementation of the new game elements `CherryBomb` y `ExplosiveZombie` requires
 **explosion chaining**: e.g. a cherry bomb explodes killing a neighbouring explosive zombie,
 which then also explodes damaging a neighbouring plant (which may not be a neighbour of the
-exploding cherry bomb). This could be implemented as follows?
+exploding cherry bomb). This could be implemented as follows:
 
 - In the `onExit` method of the game objects involved, execute any actions that must occur
 on dying, in particular, those that damage other game objects.
