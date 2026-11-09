@@ -397,7 +397,7 @@ En nuestra nueva versión queremos que se parezca a esto:
 
 ```java
 Plant plant = PlantFactory.spawnPlant(this.plantName, game, position);
-game.addPlant(plant);
+game.addGameObject(plant);
 ```
 
 Haciendo uso del patrón *Factory*, podemos extraer la lógica de creación a una clase dedicada exclusivamente a ello. De
