@@ -14,7 +14,7 @@
   * [Description](#detalles-de-la-mecánica)
   * [Implementation](#implementación-de-la-mecánica)
 - [Implementation details](#detalles-de-implementación)
-    + [Implementation of the sun mechanism](#variables-estáticas)
+    + [Implementation of the suncoin mechanism](#suncoin-mechanism)
       - [Counting generated suns and caught suns](#soles-generados-y-soles-cogidos)
       - [Ensuring only one catch on each cycle](#catchcommand)
   * [The `GameAction` interface and the `ExplosionAction` class](#la-interfaz-gameactions-y-las-acciones-explosionaction)
