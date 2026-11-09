@@ -81,10 +81,6 @@ very little modification.
 After adding the new plants, the output of the `list` command should be as follows:
 
 ```
-Command > l
-
-[DEBUG] Executing: l
-
 Available plants:
 [S]unflower: cost='20' suncoins, damage='0', endurance='1'
 [P]eashooter: cost='50' suncoins, damage='1', endurance='3'
