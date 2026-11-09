@@ -24,7 +24,7 @@
 <!-- TOC --><a name="práctica-2-parte-ii-plantas-contra-zombis-extended"></a>
 # Assignment 2 (Part II): Plants versus Zombies Extended
 
-**Submission: 18th Noviembre at 12:00hrs**
+**Submission (of parts I and II): November 18th, 12:00**
 
 **Objective:** inheritance, polymorphism, abstract classes and interfaces
 
