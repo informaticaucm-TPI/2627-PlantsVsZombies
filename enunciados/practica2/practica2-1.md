@@ -215,7 +215,7 @@ cualquier parte de la aplicación podemos llamar a los métodos de `Game`. Para 
 *acoplamiento* en nuestro código, podemos hacer uso de las interfaces de Java.
 
 Mediante las interfaces de Java podemos declarar de manera específica las dependencias / necesidades de una parte de
-nuestro código. En nuestro vamos a definir tres interfaces:
+nuestro código. En nuestro caso vamos a definir tres interfaces:
 
 - `GameStatus`: Incluirá todos los métodos que necesita `GamePrinter` para "conocer" el estado del mundo y poder hacer
   su trabajo.
