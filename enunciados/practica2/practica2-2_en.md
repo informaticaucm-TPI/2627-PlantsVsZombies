@@ -1,5 +1,5 @@
 <!-- TOC start -->
-- [Assignment 2 (Part II): Plants versus Zombies Extended](#práctica-2-parte-ii-plantas-contra-zombis-extended)
+- [Assignment 2 - Part II: Plants versus Zombies Extended](#práctica-2-parte-ii-plantas-contra-zombis-extended)
 - [Basic extensions to the game](#extensiones-básicas-del-juego)
   * [Introducing new game elements](#incorporación-de-nuevos-objetos-de-juego)
     + [The cherry bomb plant](#cherrybomb-plant)
@@ -22,7 +22,7 @@
 - [Tests](#pruebas)
 <!-- TOC end -->
 <!-- TOC --><a name="práctica-2-parte-ii-plantas-contra-zombis-extended"></a>
-# Assignment 2 (Part II): Plants versus Zombies Extended
+# Assignment 2 - Part II: Plants versus Zombies Extended
 
 **Submission (of parts I and II): November 18th, 12:00**
 
