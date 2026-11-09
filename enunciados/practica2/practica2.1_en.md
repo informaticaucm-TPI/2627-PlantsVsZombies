@@ -17,7 +17,7 @@
 <!-- TOC --><a name="assignment-2---part-i-pvz-refactored"></a>
 # Assignment 2 - Part I: Plants vs Zombies Refactored
 
-**Submission (of parts I and II): November 16th, 09:00**
+**Submission (of parts I and II): November 18th, 12:00**
 
 **Objetivos:** Use of inheritance, polymorphism, abstract classes and interfaces.
 
