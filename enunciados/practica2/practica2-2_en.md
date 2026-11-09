@@ -8,7 +8,7 @@
     + [The sporty zombie](#sporty-zombie)
     + [The explosive zombie](#explosive-zombie)
   * [Introducing new commands](#commands)
-    + [Debugging commands](#debugging-command)
+    + [Debugging commands](#debugging-commands)
     + [Reset command](#reset-command)
 - [Changing the mechanism for obtaining suncoins](#suncoin-mechanism)
   * [Description](#detalles-de-la-mecánica)
