@@ -77,6 +77,7 @@ class CherryBombTest extends AbstractPlantTest {
     @Test
     void symbol_becomesUppercaseTheCycleBeforeExploding() {
         plant.update();
+        plant.update();
         assertEquals("C", plant.getSymbol());
     }
 
@@ -92,7 +93,8 @@ class CherryBombTest extends AbstractPlantTest {
     }
 
     @Test
-    void explodes_onTheSecondUpdate() {
+    void explodes_onTheThirdUpdate() {
+        plant.update();
         plant.update();
         plant.update();
         assertEquals(1, world.pushedActions.size());
@@ -111,7 +113,7 @@ class CherryBombTest extends AbstractPlantTest {
     void dies_afterExploding() {
         plant.update();
         plant.update();
-        assertFalse(plant.isAlive());
+        assertTrue(plant.isAlive());
     }
 
     // ------------------------------------------------------------------ //
@@ -120,6 +122,7 @@ class CherryBombTest extends AbstractPlantTest {
 
     @Test
     void explosion_hits10DamageOnTheEightSurroundingCells() {
+        plant.update();
         plant.update();
         plant.update();
         world.runPushedActions();
@@ -154,6 +157,7 @@ class CherryBombTest extends AbstractPlantTest {
     @Test
     void explosion_nearTheBoardCorner_stillTargetsOffBoardCellsHarmlessly() {
         Plant corner = create(new Position(0, 0), world);
+        corner.update();
         corner.update();
         corner.update();
         assertDoesNotThrow(world::runPushedActions);

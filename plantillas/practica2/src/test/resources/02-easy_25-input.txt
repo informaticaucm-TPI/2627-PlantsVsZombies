@@ -12,9 +12,7 @@ cp c 6 3
 c 6 1
 az sz 6 0
 az ez 5 1
-c 3 1
+c 7 2
 
 cp p 3 1
-
-
 e
