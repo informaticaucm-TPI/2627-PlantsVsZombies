@@ -1,6 +1,7 @@
 package tp1.pvz.view;
 
 import static tp1.pvz.view.Messages.PROMPT;
+import static tp1.pvz.view.Messages.SUN_SYMBOL;
 import static tp1.pvz.view.Messages.debug;
 import static tp1.pvz.view.Messages.error;
 
@@ -9,6 +10,8 @@ import tp1.pvz.utils.Position;
 import tp1.pvz.utils.StringUtils;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * View component of the game (the V in MVC).
@@ -56,7 +59,7 @@ public class GamePrinter implements GameView {
 	 * Builds a string that represent the game status: cycles, suncoins, remaining zombies.
 	 *
 	 * @return the string that represents the game status.
-	 */
+	 **/
 	private String getInfo() {
 		StringBuilder buffer = new StringBuilder();
 
@@ -121,7 +124,7 @@ public class GamePrinter implements GameView {
 		for (int row = 0; row < GameWorld.NUM_ROWS; row++) {
 			str.append(MARGIN).append(VERTICAL_DELIMITER);
 			for (int col = 0; col < GameWorld.NUM_COLS; col++) {
-				String objetsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, col)));
+				String objetsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, col))).trim();
 				str.append(StringUtils.centre(objetsInPosition, CELL_SIZE)).append(VERTICAL_DELIMITER);
 			}
 			str.append(INDENTED_ROW_BORDER);

@@ -44,6 +44,8 @@ class ExplosionChainTest {
         assertTrue(cell(2, 5).contains("c["), "just planted: lowercase c");
 
         game.update();
+        assertTrue(cell(2, 5).contains("c["), "still lowercase c");
+        game.update();
         assertTrue(cell(2, 5).contains("C["), "one cycle before exploding: uppercase C");
         assertFalse(cell(2, 5).contains("c["));
     }
@@ -55,6 +57,7 @@ class ExplosionChainTest {
         game.update();
         assertFalse(game.isEmpty(new Position(2, 5)), "still there after one cycle");
 
+        game.update();
         game.update();
         assertTrue(game.isEmpty(new Position(2, 5)), "gone after exploding");
     }
@@ -72,7 +75,7 @@ class ExplosionChainTest {
             game.addGameObject("bz", p); // the toughest zombie: endurance 8 < damage 10
         }
 
-        updateTimes(2);
+        updateTimes(3);
 
         for (Position p : around) {
             assertTrue(game.isEmpty(p), "zombie at " + p + " should have been blown up");
@@ -150,7 +153,7 @@ class ExplosionChainTest {
     @Test
     void chain_cherryBombKillsTheExplosiveZombie() {
         setUpStatementScenario();
-        updateTimes(2);
+        updateTimes(3);
 
         assertTrue(game.isEmpty(new Position(3, 5)), "the explosive zombie must die");
         assertTrue(game.isEmpty(new Position(2, 5)), "the cherry bomb must be gone");
@@ -159,7 +162,7 @@ class ExplosionChainTest {
     @Test
     void chain_explosiveZombieDamagesThePlantsAroundIt() {
         setUpStatementScenario();
-        updateTimes(2);
+        updateTimes(3);
 
         String nut = cell(3, 4);
         assertTrue(nut.contains("WN["), "the wall-nut survives");
@@ -171,10 +174,10 @@ class ExplosionChainTest {
     void chain_explosiveZombie_hits3DamageExactly() {
         // the wall-nut is diagonal to the zombie: it does not suffer the zombie's bites
         game.addGameObjectForFree("c", new Position(2, 5));
-        game.addGameObject("ez", new Position(3, 5));
+        game.addGameObject("ez", new Position(3, 6));
         game.addGameObjectForFree("wn", new Position(2, 6));
 
-        updateTimes(2);
+        updateTimes(3);
 
         assertEquals("WN[07]", cell(2, 6));
     }
@@ -195,10 +198,10 @@ class ExplosionChainTest {
     @Test
     void chain_explosiveZombie_killsFragilePlantsNextToIt() {
         game.addGameObjectForFree("c", new Position(2, 5));
-        game.addGameObject("ez", new Position(3, 5));
+        game.addGameObject("ez", new Position(3, 6));
         game.addGameObjectForFree("s", new Position(2, 6)); // endurance 1 < 3
 
-        updateTimes(2);
+        updateTimes(3);
 
         assertTrue(game.isEmpty(new Position(2, 6)));
     }
@@ -211,7 +214,7 @@ class ExplosionChainTest {
         game.addGameObject("ez", new Position(2, 2));
         game.addGameObject("bz", new Position(2, 1));
 
-        updateTimes(2);
+        updateTimes(3);
 
         assertTrue(game.isEmpty(new Position(2, 2)), "the explosive zombie dies");
         assertEquals("Bz[08]", cell(2, 1), "its explosion only hurts plants");
