@@ -318,8 +318,8 @@ Para implementar esta parte vamos a proceder con los siguientes cambios:
 - Los `Sunflowers`, en lugar de actualizar el número de *suncoins*, generarán un nuevo `Sun`.
 
 - Crearemos una clase `SunsManager` que se encargará de centralizar la generación de soles aleatorios. Esta clase es
-  similar a `ZombiesManager`. Esta acción sólo se realiza 1 vez por turno / ciclo.
-
+  similar a `ZombiesManager`.
+  
 - Actualiza `Game` para delegar en `SunsManager` la generación aleatoria de soles.
 
 - Crearemos el comando `CatchCommand` que delegará en el juego para intentar coger los soles. Recuerda que esta acción
