@@ -616,14 +616,14 @@ class GameTest {
     }
 
     @Test
-    void pushedActions_runLastInFirstOut() {
+    void pushedActions_runFirstInFirstOut() {
         List<String> order = new ArrayList<>();
         game.pushAction(world -> order.add("first"));
         game.pushAction(world -> order.add("second"));
 
         game.update();
 
-        assertEquals(List.of("second", "first"), order);
+        assertEquals(List.of("first","second"), order);
     }
 
     @Test
