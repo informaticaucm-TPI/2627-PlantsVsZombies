@@ -168,10 +168,10 @@ follows:
 
 ```
 Available zombies:
-Common Zombie: speed='2', damage='1', endurance='5'
-BucketHead Zombie: speed='4', damage='1', endurance='8'
-Sporty Zombie: speed='1', damage='1', endurance='2'
-Explosive Zombie: speed='2', damage='1', endurance='5'
+Common[Z]ombie: speed='2', damage='1', endurance='5'
+[B]ucketHead[Z]ombie: speed='4', damage='1', endurance='8'
+[S]porty[Z]ombie: speed='1', damage='1', endurance='2'
+[E]xplosive[Z]ombie: speed='2', damage='1', endurance='5'
 ```
 
 Here, we add another debugging command, `cheatPlant`, implemented in the `AddPlantCheat`
