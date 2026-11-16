@@ -96,7 +96,7 @@ less computationally costly, which is why C++ retains it as well as having an ex
 equivalent)
 
 For simplicity, we recommend that you place all programmer-defined exception classes
-in a package called `tp1.exceptions`.
+in a package called `pvz.exceptions`.
 
 
 <!-- TOC --><a name="command-exceptions"></a>
