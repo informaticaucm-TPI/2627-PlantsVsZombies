@@ -44,10 +44,10 @@ class CommonZombieTest extends AbstractZombieTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void plantToItsLeft_blocksTheZombie() {
+    void plantToItsLeft_blocksTheZombie() throws Exception {
         Game game = new Game(0L, Level.EASY);
         CommonZombie zombie = new CommonZombie(START, game);
-        game.addGameObject("wn", new Position(0, 4));
+        game.addPlant("wn", new Position(0, 4));
 
         for (int i = 0; i < 6; i++) {
             zombie.update();
@@ -56,10 +56,10 @@ class CommonZombieTest extends AbstractZombieTest {
     }
 
     @Test
-    void zombie_killsASunflowerOnItsLeft() {
+    void zombie_killsASunflowerOnItsLeft() throws Exception {
         Game game = new Game(0L, Level.EASY);
         CommonZombie zombie = new CommonZombie(START, game);
-        game.addGameObject("s", new Position(0, 4)); // endurance 1
+        game.addPlant("s", new Position(0, 4)); // endurance 1
 
         zombie.update();   // the zombie bites the sunflower
         game.update();     // dead objects are removed at the end of the cycle
@@ -69,10 +69,10 @@ class CommonZombieTest extends AbstractZombieTest {
     }
 
     @Test
-    void zombie_doesNotHurtThePlantsFurtherAway() {
+    void zombie_doesNotHurtThePlantsFurtherAway() throws Exception {
         Game game = new Game(0L, Level.EASY);
         CommonZombie zombie = new CommonZombie(START, game);
-        game.addGameObject("s", new Position(0, 2));
+        game.addPlant("s", new Position(0, 2));
 
         zombie.update();
         game.update();

@@ -39,8 +39,8 @@ class ExplosionChainTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void cherryBomb_isDrawnLowercase_thenUppercaseTheCycleBeforeExploding() {
-        game.addGameObjectForFree("c", new Position(2, 5));
+    void cherryBomb_isDrawnLowercase_thenUppercaseTheCycleBeforeExploding() throws Exception {
+        game.addPlantForFree("c", new Position(2, 5));
         assertTrue(cell(2, 5).contains("c["), "just planted: lowercase c");
 
         game.update();
@@ -51,8 +51,8 @@ class ExplosionChainTest {
     }
 
     @Test
-    void cherryBomb_explodesTwoCyclesAfterBeingPlanted_andDisappears() {
-        game.addGameObjectForFree("c", new Position(2, 5));
+    void cherryBomb_explodesTwoCyclesAfterBeingPlanted_andDisappears() throws Exception {
+        game.addPlantForFree("c", new Position(2, 5));
 
         game.update();
         assertFalse(game.isEmpty(new Position(2, 5)), "still there after one cycle");
@@ -63,8 +63,8 @@ class ExplosionChainTest {
     }
 
     @Test
-    void cherryBomb_kills_everyAdjacentZombie_includingDiagonals() {
-        game.addGameObjectForFree("c", new Position(1, 3));
+    void cherryBomb_kills_everyAdjacentZombie_includingDiagonals() throws Exception {
+        game.addPlantForFree("c", new Position(1, 3));
         // The cell to the right (1, 4) is left out on purpose: a zombie standing there
         // bites the bomb every cycle, which is a different scenario.
         Position[] around = {
@@ -72,7 +72,7 @@ class ExplosionChainTest {
             new Position(1, 2),
             new Position(2, 2), new Position(2, 3), new Position(2, 4)};
         for (Position p : around) {
-            game.addGameObject("bz", p); // the toughest zombie: endurance 8 < damage 10
+            game.addZombie("bz", p); // the toughest zombie: endurance 8 < damage 10
         }
 
         updateTimes(3);
@@ -83,38 +83,38 @@ class ExplosionChainTest {
     }
 
     /** Plants a cherry bomb at (0, 0) and a lone zombie at {@code zombie}; returns the zombie's cell after 2 cycles. */
-    private String zombieCellAfterBombExplodes(Position zombie) {
-        game.addGameObjectForFree("c", new Position(0, 0));
-        game.addGameObject("z", zombie);
+    private String zombieCellAfterBombExplodes(Position zombie) throws Exception {
+        game.addPlantForFree("c", new Position(0, 0));
+        game.addZombie("z", zombie);
         updateTimes(2);
         return game.positionToString(zombie);
     }
 
     
     @Test
-    void cherryBomb_doesNotHurtAZombieTwoCellsAwayInItsRow() {
+    void cherryBomb_doesNotHurtAZombieTwoCellsAwayInItsRow() throws Exception {
         // "a todos los zombis que están a su alrededor (a distancia de 1 casilla)"
         assertEquals(" Z[05]", zombieCellAfterBombExplodes(new Position(0, 2)));
     }
 
     
     @Test
-    void cherryBomb_doesNotHurtAZombieFarAwayInItsRow() {
+    void cherryBomb_doesNotHurtAZombieFarAwayInItsRow() throws Exception {
         assertEquals(" Z[05]", zombieCellAfterBombExplodes(new Position(0, 5)));
     }
 
     @Test
-    void cherryBomb_doesNotHurtAZombieTwoCellsAwayInAColumnOrDiagonal() {
+    void cherryBomb_doesNotHurtAZombieTwoCellsAwayInAColumnOrDiagonal() throws Exception {
         assertEquals(" Z[05]", zombieCellAfterBombExplodes(new Position(2, 2)));
         setUp();
         assertEquals(" Z[05]", zombieCellAfterBombExplodes(new Position(2, 0)));
     }
 
     @Test
-    void cherryBomb_doesNotHurtPlants() {
-        game.addGameObjectForFree("c", new Position(2, 5));
-        game.addGameObjectForFree("wn", new Position(2, 4));
-        game.addGameObjectForFree("s", new Position(1, 5));
+    void cherryBomb_doesNotHurtPlants() throws Exception {
+        game.addPlantForFree("c", new Position(2, 5));
+        game.addPlantForFree("wn", new Position(2, 4));
+        game.addPlantForFree("s", new Position(1, 5));
 
         updateTimes(2);
 
@@ -123,9 +123,9 @@ class ExplosionChainTest {
     }
 
     @Test
-    void cherryBomb_eatenByAZombieBeforeExploding_doesNotExplode() {
-        game.addGameObjectForFree("c", new Position(0, 3));
-        game.addGameObject("z", new Position(0, 4));   // would die if the bomb exploded
+    void cherryBomb_eatenByAZombieBeforeExploding_doesNotExplode() throws Exception {
+        game.addPlantForFree("c", new Position(0, 3));
+        game.addZombie("z", new Position(0, 4));   // would die if the bomb exploded
         game.zombieAttack(new Position(0, 3), 2);      // the bomb (endurance 2) is eaten right now
 
         updateTimes(2);
@@ -144,14 +144,14 @@ class ExplosionChainTest {
      *  row 3:           WN (col 4)   Ez (col 5)
      * </pre>
      */
-    private void setUpStatementScenario() {
-        game.addGameObjectForFree("c", new Position(2, 5));
-        game.addGameObject("ez", new Position(3, 5));
-        game.addGameObjectForFree("wn", new Position(3, 4));
+    private void setUpStatementScenario() throws Exception {
+        game.addPlantForFree("c", new Position(2, 5));
+        game.addZombie("ez", new Position(3, 5));
+        game.addPlantForFree("wn", new Position(3, 4));
     }
 
     @Test
-    void chain_cherryBombKillsTheExplosiveZombie() {
+    void chain_cherryBombKillsTheExplosiveZombie() throws Exception {
         setUpStatementScenario();
         updateTimes(3);
 
@@ -160,7 +160,7 @@ class ExplosionChainTest {
     }
 
     @Test
-    void chain_explosiveZombieDamagesThePlantsAroundIt() {
+    void chain_explosiveZombieDamagesThePlantsAroundIt() throws Exception {
         setUpStatementScenario();
         updateTimes(3);
 
@@ -171,11 +171,11 @@ class ExplosionChainTest {
     }
 
     @Test
-    void chain_explosiveZombie_hits3DamageExactly() {
+    void chain_explosiveZombie_hits3DamageExactly() throws Exception {
         // the wall-nut is diagonal to the zombie: it does not suffer the zombie's bites
-        game.addGameObjectForFree("c", new Position(2, 5));
-        game.addGameObject("ez", new Position(3, 6));
-        game.addGameObjectForFree("wn", new Position(2, 6));
+        game.addPlantForFree("c", new Position(2, 5));
+        game.addZombie("ez", new Position(3, 6));
+        game.addPlantForFree("wn", new Position(2, 6));
 
         updateTimes(3);
 
@@ -183,11 +183,11 @@ class ExplosionChainTest {
     }
 
     @Test
-    void chain_explosiveZombie_doesNotReachPlantsTwoCellsAway() {
-        game.addGameObjectForFree("c", new Position(2, 5));
-        game.addGameObject("ez", new Position(3, 5));
-        game.addGameObjectForFree("wn", new Position(3, 7));
-        game.addGameObjectForFree("wn", new Position(1, 3));
+    void chain_explosiveZombie_doesNotReachPlantsTwoCellsAway() throws Exception {
+        game.addPlantForFree("c", new Position(2, 5));
+        game.addZombie("ez", new Position(3, 5));
+        game.addPlantForFree("wn", new Position(3, 7));
+        game.addPlantForFree("wn", new Position(1, 3));
 
         updateTimes(2);
 
@@ -196,10 +196,10 @@ class ExplosionChainTest {
     }
 
     @Test
-    void chain_explosiveZombie_killsFragilePlantsNextToIt() {
-        game.addGameObjectForFree("c", new Position(2, 5));
-        game.addGameObject("ez", new Position(3, 6));
-        game.addGameObjectForFree("s", new Position(2, 6)); // endurance 1 < 3
+    void chain_explosiveZombie_killsFragilePlantsNextToIt() throws Exception {
+        game.addPlantForFree("c", new Position(2, 5));
+        game.addZombie("ez", new Position(3, 6));
+        game.addPlantForFree("s", new Position(2, 6)); // endurance 1 < 3
 
         updateTimes(3);
 
@@ -207,12 +207,12 @@ class ExplosionChainTest {
     }
 
     @Test
-    void chain_explosiveZombieExplosion_doesNotHurtOtherZombies() {
+    void chain_explosiveZombieExplosion_doesNotHurtOtherZombies() throws Exception {
         // bomb (1,3) kills the zombie at (2,2) (its down-left neighbour). The zombie at (2,1)
         // is two cells from the bomb but right next to the zombie that explodes.
-        game.addGameObjectForFree("c", new Position(1, 3));
-        game.addGameObject("ez", new Position(2, 2));
-        game.addGameObject("bz", new Position(2, 1));
+        game.addPlantForFree("c", new Position(1, 3));
+        game.addZombie("ez", new Position(2, 2));
+        game.addZombie("bz", new Position(2, 1));
 
         updateTimes(3);
 
@@ -221,7 +221,7 @@ class ExplosionChainTest {
     }
 
     @Test
-    void chain_zombieDeathsAreCounted() {
+    void chain_zombieDeathsAreCounted() throws Exception {
         setUpStatementScenario();
         int before = game.getRemainingZombies();
         updateTimes(2);

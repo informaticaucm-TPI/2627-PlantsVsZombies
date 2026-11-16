@@ -24,12 +24,14 @@ public class FakeGameWorld implements GameWorld {
 
     public final List<Attack> zombieAttacks = new ArrayList<>();
     public final List<Attack> plantAttacks = new ArrayList<>();
+    public final List<Attack> explosionAttacks = new ArrayList<>();
     public final List<GameAction> pushedActions = new ArrayList<>();
     public final List<GameObject> addedObjects = new ArrayList<>();
 
     public int generateSunCalls;
     public int generatedCoins;
     public int zombiesKilled;
+    public int points;
 
     /** Value returned by {@link #randomPosition()}. */
     public Position nextRandomPosition = new Position(0, 0);
@@ -91,6 +93,16 @@ public class FakeGameWorld implements GameWorld {
     @Override
     public boolean plantAttack(Position p, int damage) {
         return plantAttacks.add(new Attack(p, damage));
+    }
+
+    @Override
+    public boolean explosionAttack(Position p, int damage) {
+        return explosionAttacks.add(new Attack(p, damage));
+    }
+
+    @Override
+    public void addPoints(int points) {
+        this.points += points;
     }
 
     @Override

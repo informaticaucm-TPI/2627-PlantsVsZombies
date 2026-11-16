@@ -95,7 +95,7 @@ class AddZombieCommandTest extends CommandTestBase {
     @Test
     void unknownZombie_isInvalidObject() {
         run("az", "ghost", "7", "0");
-        assertEquals(List.of(Messages.INVALID_GAME_OBJECT), view.errors);
+        assertEquals(List.of(Messages.INVALID_GAME_OBJECT.formatted("ghost")), view.errors);
         assertEquals(0, game.getCycles());
         assertEquals(0, view.gamesShown);
     }
@@ -106,7 +106,7 @@ class AddZombieCommandTest extends CommandTestBase {
         for (String plant : new String[] {"s", "p", "wn", "c"}) {
             setUpGameAndView();
             run("az", plant, "3", "3");
-            assertEquals(List.of(Messages.INVALID_GAME_OBJECT), view.errors, plant);
+            assertEquals(List.of(Messages.INVALID_GAME_OBJECT.formatted(plant)), view.errors, plant);
             assertTrue(game.isEmpty(at(3, 3)), plant + " must not be placed with addZombie");
             assertEquals(Game.INITIAL_COINS, game.getCoins(), plant + " must not be charged");
             assertEquals(0, game.getCycles(), plant);
@@ -120,7 +120,8 @@ class AddZombieCommandTest extends CommandTestBase {
         for (String[] position : positions) {
             setUpGameAndView();
             run("az", "z", position[0], position[1]);
-            assertEquals(List.of(Messages.INVALID_POSITION), view.errors, String.join(",", position));
+            assertEquals(List.of(Messages.INVALID_POSITION + ": (" + position[0] + ", " + position[1] + ")"),
+                    view.errors, String.join(",", position));
             assertEquals(0, game.getCycles());
             assertEquals(0, view.gamesShown);
         }
@@ -133,7 +134,7 @@ class AddZombieCommandTest extends CommandTestBase {
 
         run("az", "bz", "5", "1");
 
-        assertEquals(List.of(Messages.INVALID_POSITION), view.errors);
+        assertEquals(List.of(Messages.INVALID_POSITION + ": (5, 1)"), view.errors);
         assertEquals(1, game.getCycles(), "the second zombie did not advance the game");
         assertEquals(" Z[05]", cell(1, 5), "the first zombie is still alone in the cell");
     }
@@ -145,7 +146,7 @@ class AddZombieCommandTest extends CommandTestBase {
 
         run("az", "z", "5", "1");
 
-        assertEquals(List.of(Messages.INVALID_POSITION), view.errors);
+        assertEquals(List.of(Messages.INVALID_POSITION + ": (5, 1)"), view.errors);
         assertTrue(cell(1, 5).contains("WN["));
         assertFalse(cell(1, 5).contains("Z["));
     }

@@ -74,8 +74,8 @@ class CatchCommandTest extends CommandTestBase {
     }
 
     @Test
-    void aSunSharingACellWithAPlant_canBeCaught() {
-        game.addGameObjectForFree("s", at(0, 0));
+    void aSunSharingACellWithAPlant_canBeCaught() throws Exception {
+        game.addPlantForFree("s", at(0, 0));
         putSun(0, 0);
         run("c", "0", "0");
         assertEquals(60, game.getCoins());
@@ -156,8 +156,8 @@ class CatchCommandTest extends CommandTestBase {
     }
 
     @Test
-    void cellWithAPlantOnly_hasNothingToCatch() {
-        game.addGameObjectForFree("s", at(0, 0));
+    void cellWithAPlantOnly_hasNothingToCatch() throws Exception {
+        game.addPlantForFree("s", at(0, 0));
         run("c", "0", "0");
         assertEquals(1, view.errors.size());
         assertEquals(50, game.getCoins());
@@ -169,7 +169,8 @@ class CatchCommandTest extends CommandTestBase {
         for (String[] position : positions) {
             setUpGameAndView();
             run("c", position[0], position[1]);
-            assertEquals(List.of(Messages.INVALID_POSITION), view.errors, String.join(",", position));
+            assertEquals(List.of(Messages.INVALID_POSITION + ": (" + position[0] + ", " + position[1] + ")"),
+                    view.errors, String.join(",", position));
             assertEquals(0, view.gamesShown);
         }
     }

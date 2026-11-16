@@ -101,7 +101,7 @@ class AddPlantCommandTest extends CommandTestBase {
     @Test
     void unknownPlant_isInvalidObject() {
         run("add", "tree", "0", "0");
-        assertEquals(List.of(Messages.INVALID_GAME_OBJECT), view.errors);
+        assertEquals(List.of(Messages.INVALID_GAME_OBJECT.formatted("tree")), view.errors);
         assertNothingHappened();
     }
 
@@ -111,7 +111,7 @@ class AddPlantCommandTest extends CommandTestBase {
         for (String zombie : new String[] {"zombie", "z", "bz", "sz", "ez"}) {
             setUpGameAndView();
             run("add", zombie, "0", "0");
-            assertEquals(List.of(Messages.INVALID_GAME_OBJECT), view.errors, zombie);
+            assertEquals(List.of(Messages.INVALID_GAME_OBJECT.formatted(zombie)), view.errors, zombie);
             assertNothingHappened();
             assertTrue(game.isEmpty(at(0, 0)), zombie + " must not be placed with the add command");
         }
@@ -123,7 +123,8 @@ class AddPlantCommandTest extends CommandTestBase {
         for (String[] position : positions) {
             setUpGameAndView();
             run("add", "s", position[0], position[1]);
-            assertEquals(List.of(Messages.INVALID_POSITION), view.errors, String.join(",", position));
+            assertEquals(List.of(Messages.INVALID_POSITION + ": (" + position[0] + ", " + position[1] + ")"),
+                    view.errors, String.join(",", position));
             assertNothingHappened();
         }
     }
@@ -135,7 +136,7 @@ class AddPlantCommandTest extends CommandTestBase {
 
         run("add", "p", "0", "0");
 
-        assertEquals(List.of(Messages.INVALID_POSITION), view.errors);
+        assertEquals(List.of(Messages.INVALID_POSITION + ": (0, 0)"), view.errors);
         assertEquals(30, game.getCoins());
         assertEquals(1, game.getCycles());
         assertEquals(0, view.gamesShown);

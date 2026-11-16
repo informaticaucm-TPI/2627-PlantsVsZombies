@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import tp1.pvz.control.Level;
+import tp1.pvz.control.exception.*;
 import tp1.pvz.logic.gameobjects.Sun;
 import tp1.pvz.utils.Position;
 
@@ -115,44 +116,44 @@ class GameTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void addSunflower_byNameAndBySymbol_costs20() {
-        game.addGameObject("sunflower", at(0, 0));
+    void addSunflower_byNameAndBySymbol_costs20() throws Exception {
+        game.addPlant("sunflower", at(0, 0));
         assertEquals(30, game.getCoins());
         Game other = new Game(SEED, Level.EASY);
-        other.addGameObject("s", at(0, 0));
+        other.addPlant("s", at(0, 0));
         assertEquals(30, other.getCoins());
     }
 
     @Test
-    void addPeashooter_byNameAndBySymbol_costs50() {
-        game.addGameObject("peashooter", at(0, 0));
+    void addPeashooter_byNameAndBySymbol_costs50() throws Exception {
+        game.addPlant("peashooter", at(0, 0));
         assertEquals(0, game.getCoins());
         Game other = new Game(SEED, Level.EASY);
-        other.addGameObject("p", at(0, 0));
+        other.addPlant("p", at(0, 0));
         assertEquals(0, other.getCoins());
     }
 
     @Test
-    void addWallNut_byNameAndBySymbol_costs50() {
-        game.addGameObject("wall-nut", at(0, 0));
+    void addWallNut_byNameAndBySymbol_costs50() throws Exception {
+        game.addPlant("wall-nut", at(0, 0));
         assertEquals(0, game.getCoins());
         Game other = new Game(SEED, Level.EASY);
-        other.addGameObject("wn", at(0, 0));
+        other.addPlant("wn", at(0, 0));
         assertEquals(0, other.getCoins());
     }
 
     @Test
-    void addCherryBomb_byNameAndBySymbol_costs50() {
-        game.addGameObject("cherry-bomb", at(0, 0));
+    void addCherryBomb_byNameAndBySymbol_costs50() throws Exception {
+        game.addPlant("cherry-bomb", at(0, 0));
         assertEquals(0, game.getCoins());
         Game other = new Game(SEED, Level.EASY);
-        other.addGameObject("c", at(0, 0));
+        other.addPlant("c", at(0, 0));
         assertEquals(0, other.getCoins());
     }
 
     @Test
-    void addPlant_returnsTrue_whenItIsPlaced() {
-        assertTrue(game.addGameObject("s", at(0, 0)));
+    void addPlant_returnsTrue_whenItIsPlaced() throws Exception {
+        assertTrue(game.addPlant("s", at(0, 0)));
     }
 
     // ------------------------------------------------------------------ //
@@ -160,11 +161,11 @@ class GameTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void addedPlants_occupyTheirCell() {
+    void addedPlants_occupyTheirCell() throws Exception {
         String[] plants = {"s", "p", "wn", "c"};
         for (String plant : plants) {
             Game fresh = new Game(SEED, Level.EASY);
-            fresh.addGameObjectForFree(plant, at(1, 2));
+            fresh.addPlantForFree(plant, at(1, 2));
             assertFalse(fresh.isEmpty(at(1, 2)), plant);
         }
     }
@@ -175,9 +176,9 @@ class GameTest {
     }
 
     @Test
-    void cannotPlantOnAnOccupiedCell() {
-        game.addGameObject("s", at(0, 0));
-        assertFalse(game.addGameObject("s", at(0, 0)));
+    void cannotPlantOnAnOccupiedCell() throws Exception {
+        game.addPlant("s", at(0, 0));
+        assertThrows(InvalidPositionException.class, () -> game.addPlant("s", at(0, 0)));
         assertEquals(30, game.getCoins(), "the second plant must not be charged");
     }
 
@@ -186,19 +187,19 @@ class GameTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void insufficientCoins_plantIsNotPlaced_coinsUnchanged() {
-        game.addGameObject("p", at(0, 0)); // costs 50 → coins = 0
-        assertFalse(game.addGameObject("s", at(0, 1)));
+    void insufficientCoins_plantIsNotPlaced_coinsUnchanged() throws Exception {
+        game.addPlant("p", at(0, 0)); // costs 50 → coins = 0
+        assertThrows(NotEnoughSuncoinsException.class, () -> game.addPlant("s", at(0, 1)));
         assertTrue(game.isEmpty(at(0, 1)));
         assertEquals(0, game.getCoins());
     }
 
     @Test
-    void insufficientCoins_forAWallNutAndACherryBomb() {
-        game.addGameObject("s", at(0, 0));
-        game.addGameObject("s", at(0, 1)); // 10 coins left
-        assertFalse(game.addGameObject("wn", at(0, 2)));
-        assertFalse(game.addGameObject("c", at(0, 3)));
+    void insufficientCoins_forAWallNutAndACherryBomb() throws Exception {
+        game.addPlant("s", at(0, 0));
+        game.addPlant("s", at(0, 1)); // 10 coins left
+        assertThrows(NotEnoughSuncoinsException.class, () -> game.addPlant("wn", at(0, 2)));
+        assertThrows(NotEnoughSuncoinsException.class, () -> game.addPlant("c", at(0, 3)));
         assertEquals(10, game.getCoins());
     }
 
@@ -207,28 +208,28 @@ class GameTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void addForFree_doesNotConsumeSuncoins() {
-        assertTrue(game.addGameObjectForFree("p", at(0, 0)));
+    void addForFree_doesNotConsumeSuncoins() throws Exception {
+        assertTrue(game.addPlantForFree("p", at(0, 0)));
         assertEquals(50, game.getCoins());
     }
 
     @Test
-    void addForFree_worksWithoutSuncoins() {
-        game.addGameObject("p", at(3, 3)); // coins = 0
-        assertTrue(game.addGameObjectForFree("c", at(0, 0)));
+    void addForFree_worksWithoutSuncoins() throws Exception {
+        game.addPlant("p", at(3, 3)); // coins = 0
+        assertTrue(game.addPlantForFree("c", at(0, 0)));
         assertFalse(game.isEmpty(at(0, 0)));
         assertEquals(0, game.getCoins());
     }
 
     @Test
-    void addForFree_onAnOccupiedCell_fails() {
-        game.addGameObjectForFree("s", at(0, 0));
-        assertFalse(game.addGameObjectForFree("p", at(0, 0)));
+    void addForFree_onAnOccupiedCell_fails() throws Exception {
+        game.addPlantForFree("s", at(0, 0));
+        assertThrows(InvalidPositionException.class, () -> game.addPlantForFree("p", at(0, 0)));
     }
 
     @Test
-    void addForFree_unknownName_fails() {
-        assertFalse(game.addGameObjectForFree("tree", at(0, 0)));
+    void addForFree_unknownName_fails() throws Exception {
+        assertThrows(InvalidGameObjectException.class, () -> game.addPlantForFree("tree", at(0, 0)));
     }
 
     // ------------------------------------------------------------------ //
@@ -236,28 +237,28 @@ class GameTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void addZombie_ofEveryKind_isPlacedForFree() {
+    void addZombie_ofEveryKind_isPlacedForFree() throws Exception {
         String[] zombies = {"z", "bz", "sz", "ez"};
         for (String zombie : zombies) {
             Game fresh = new Game(SEED, Level.EASY);
-            assertTrue(fresh.addGameObject(zombie, at(2, 5)), zombie);
+            assertTrue(fresh.addZombie(zombie, at(2, 5)), zombie);
             assertFalse(fresh.isEmpty(at(2, 5)), zombie);
             assertEquals(50, fresh.getCoins(), "zombies do not cost suncoins: " + zombie);
         }
     }
 
     @Test
-    void addZombie_doesNotConsumeTheLevelQuota() {
-        game.addGameObject("z", at(0, 5));
+    void addZombie_doesNotConsumeTheLevelQuota() throws Exception {
+        game.addZombie("z", at(0, 5));
         assertEquals(Level.EASY.getNumberOfZombies(), game.getRemainingZombies());
     }
 
     @Test
-    void addedZombies_showTheirIcon() {
-        game.addGameObject("bz", at(0, 5));
-        game.addGameObject("sz", at(1, 5));
-        game.addGameObject("ez", at(2, 5));
-        game.addGameObject("z", at(3, 5));
+    void addedZombies_showTheirIcon() throws Exception {
+        game.addZombie("bz", at(0, 5));
+        game.addZombie("sz", at(1, 5));
+        game.addZombie("ez", at(2, 5));
+        game.addZombie("z", at(3, 5));
 
         assertEquals("Bz[08]", cell(0, 5));
         assertEquals("Sz[02]", cell(1, 5));
@@ -266,8 +267,10 @@ class GameTest {
     }
 
     @Test
-    void zombieCanBeAddedJustOutsideTheRightEdge() {
-        assertTrue(game.addGameObject("z", at(1, Game.NUM_COLS)));
+    void zombieCanBeAddedJustOutsideTheRightEdge() throws Exception {
+        // zombies spawn outside the board, so they are not placed by name (that is user input)
+        assertTrue(game.addGameObject(
+                tp1.pvz.logic.gameobjects.factories.ZombieFactory.spawnZombie("z", game, at(1, Game.NUM_COLS))));
     }
 
     // ------------------------------------------------------------------ //
@@ -304,12 +307,11 @@ class GameTest {
     }
 
     @Test
-    void isValidPosition_needsToBeInsideAndEmpty() {
-        assertTrue(game.isValidPosition(at(0, 0)));
-        assertFalse(game.isValidPosition(at(0, Game.NUM_COLS)));
-        assertFalse(game.isValidPosition(at(-1, 0)));
-        game.addGameObject("s", at(0, 0));
-        assertFalse(game.isValidPosition(at(0, 0)));
+    void addGameObject_needsAPositionInsideTheBoardAndEmpty() throws GameException {
+        assertTrue(game.addPlant("s", at(0, 0)));
+        assertThrows(InvalidPositionException.class, () -> game.addPlant("s", at(0, Game.NUM_COLS)));
+        assertThrows(InvalidPositionException.class, () -> game.addPlant("s", at(-1, 0)));
+        assertThrows(InvalidPositionException.class, () -> game.addPlant("s", at(0, 0)));
     }
 
     // ------------------------------------------------------------------ //
@@ -330,8 +332,8 @@ class GameTest {
 
     
     @Test
-    void sunflower_generatesASun_after4Updates() {
-        game.addGameObject("s", at(0, 0));
+    void sunflower_generatesASun_after4Updates() throws Exception {
+        game.addPlant("s", at(0, 0));
         updateTimes(3);
         assertEquals(0, game.getGeneratedCoins(), "no sun yet after 3 updates");
         updateTimes(1);
@@ -341,15 +343,15 @@ class GameTest {
 
     
     @Test
-    void sunflower_doesNotAddSuncoinsByItself() {
-        game.addGameObject("s", at(0, 0)); // 30 coins left
+    void sunflower_doesNotAddSuncoinsByItself() throws Exception {
+        game.addPlant("s", at(0, 0)); // 30 coins left
         updateTimes(4);
         assertEquals(30, game.getCoins(), "suncoins only arrive when a sun is caught");
     }
 
     @Test
-    void sunflower_generatesSunsPeriodically() {
-        game.addGameObject("s", at(0, 0));
+    void sunflower_generatesSunsPeriodically() throws Exception {
+        game.addPlant("s", at(0, 0));
         updateTimes(4);
         assertEquals(1, game.getGeneratedCoins());
         updateTimes(2);
@@ -415,20 +417,19 @@ class GameTest {
 
     
     @Test
-    void aPlantCanBePlantedOnACellWithASun() {
+    void aPlantCanBePlantedOnACellWithASun() throws Exception {
         // "Sí puede haber una planta o un zombie en la misma casilla de un sol"
         game.addGameObject(new Sun(at(1, 1), game));
 
-        assertTrue(game.isValidPosition(at(1, 1)));
-        assertTrue(game.addGameObject("s", at(1, 1)));
+        assertTrue(game.addPlant("s", at(1, 1)));
         assertTrue(cell(1, 1).contains("*") && cell(1, 1).contains("S["),
                 "the cell draws both the sun and the plant, was: " + cell(1, 1));
     }
 
     
     @Test
-    void aZombieWalksOverSuns() {
-        game.addGameObject("sz", at(0, 5));        // moves every cycle after its first step
+    void aZombieWalksOverSuns() throws Exception {
+        game.addZombie("sz", at(0, 5));        // moves every cycle after its first step
         game.addGameObject(new Sun(at(0, 4), game));
         game.addGameObject(new Sun(at(0, 3), game));
 
@@ -450,7 +451,7 @@ class GameTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void catch_aSun_gives10Suncoins_andCountsAsCaught() {
+    void catch_aSun_gives10Suncoins_andCountsAsCaught() throws Exception {
         game.addGameObject(new Sun(at(1, 3), game));
 
         assertTrue(game.catchObject(at(1, 3)));
@@ -460,37 +461,37 @@ class GameTest {
     }
 
     @Test
-    void catch_whereThereIsNoSun_failsWithoutEffects() {
-        assertFalse(game.catchObject(at(1, 3)));
+    void catch_whereThereIsNoSun_failsWithoutEffects() throws Exception {
+        assertThrows(NotCatchablePositionException.class, () -> game.catchObject(at(1, 3)));
         assertEquals(50, game.getCoins());
         assertEquals(0, game.getCaughtCoins());
     }
 
     @Test
-    void catch_doesNotCollectPlantsOrZombies() {
-        game.addGameObjectForFree("s", at(0, 0));
-        game.addGameObject("z", at(1, 4));
-        assertFalse(game.catchObject(at(0, 0)));
-        assertFalse(game.catchObject(at(1, 4)));
+    void catch_doesNotCollectPlantsOrZombies() throws Exception {
+        game.addPlantForFree("s", at(0, 0));
+        game.addZombie("z", at(1, 4));
+        assertThrows(NotCatchablePositionException.class, () -> game.catchObject(at(0, 0)));
+        assertThrows(NotCatchablePositionException.class, () -> game.catchObject(at(1, 4)));
         assertEquals(50, game.getCoins());
     }
 
     @Test
-    void catch_doesNotAdvanceTheCycle() {
+    void catch_doesNotAdvanceTheCycle() throws Exception {
         game.addGameObject(new Sun(at(1, 3), game));
         game.catchObject(at(1, 3));
         assertEquals(0, game.getCycles());
     }
 
     @Test
-    void catch_removesTheSunFromTheBoard() {
+    void catch_removesTheSunFromTheBoard() throws Exception {
         game.addGameObject(new Sun(at(1, 3), game));
         game.catchObject(at(1, 3));
         assertFalse(cell(1, 3).contains("*"), "a caught sun must not be drawn any more");
     }
 
     @Test
-    void catch_collectsEverySunInTheCell() {
+    void catch_collectsEverySunInTheCell() throws Exception {
         game.addGameObject(new Sun(at(1, 3), game));
         game.addGameObject(new Sun(at(1, 3), game));
         game.addGameObject(new Sun(at(1, 3), game));
@@ -502,27 +503,28 @@ class GameTest {
     }
 
     @Test
-    void catch_aSunTogetherWithAPlantOrZombie() {
-        game.addGameObjectForFree("s", at(0, 0));
+    void catch_aSunTogetherWithAPlantOrZombie() throws Exception {
+        game.addPlantForFree("s", at(0, 0));
         game.addGameObject(new Sun(at(0, 0), game));
         assertTrue(game.catchObject(at(0, 0)));
         assertTrue(cell(0, 0).contains("S["), "the plant stays where it was");
     }
 
     @Test
-    void catch_onlyOncePerCycle() {
+    void catch_onlyOncePerCycle() throws Exception {
         game.addGameObject(new Sun(at(0, 0), game));
         game.addGameObject(new Sun(at(3, 7), game));
 
         assertTrue(game.catchObject(at(0, 0)));
-        assertFalse(game.catchObject(at(3, 7)), "a second catch in the same cycle is not allowed");
+        assertThrows(AlreadyCaughtSuncoinException.class, () -> game.catchObject(at(3, 7)),
+                "a second catch in the same cycle is not allowed");
 
         assertEquals(60, game.getCoins());
         assertEquals(1, game.getCaughtCoins());
     }
 
     @Test
-    void catch_isAvailableAgain_afterTheCycleEnds() {
+    void catch_isAvailableAgain_afterTheCycleEnds() throws Exception {
         game.addGameObject(new Sun(at(0, 0), game));
         game.addGameObject(new Sun(at(3, 7), game));
         game.catchObject(at(0, 0));
@@ -535,9 +537,9 @@ class GameTest {
     }
 
     @Test
-    void failedCatch_doesNotUseUpTheCycle() {
+    void failedCatch_doesNotUseUpTheCycle() throws Exception {
         game.addGameObject(new Sun(at(3, 7), game));
-        assertFalse(game.catchObject(at(0, 0)));
+        assertThrows(NotCatchablePositionException.class, () -> game.catchObject(at(0, 0)));
         assertTrue(game.catchObject(at(3, 7)));
     }
 
@@ -554,10 +556,10 @@ class GameTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void plantAttack_hitsTheFirstZombieToTheRight() {
-        game.addGameObject("z", at(0, 4));
-        game.addGameObject("z", at(0, 6));
-        game.addGameObject("p", at(0, 0));
+    void plantAttack_hitsTheFirstZombieToTheRight() throws Exception {
+        game.addZombie("z", at(0, 4));
+        game.addZombie("z", at(0, 6));
+        game.addPlant("p", at(0, 0));
         game.update();
 
         assertEquals(" Z[04]", cell(0, 4));
@@ -565,8 +567,8 @@ class GameTest {
     }
 
     @Test
-    void plantAttack_doesNothing_whenThereIsNoZombieInTheRow() {
-        game.addGameObject("z", at(1, 4));
+    void plantAttack_doesNothing_whenThereIsNoZombieInTheRow() throws Exception {
+        game.addZombie("z", at(1, 4));
         assertDoesNotThrow(() -> game.plantAttack(at(0, 1), 1));
         assertEquals(" Z[05]", cell(1, 4));
     }
@@ -578,15 +580,15 @@ class GameTest {
     }
 
     @Test
-    void zombieAttack_hurtsThePlantInThatCell() {
-        game.addGameObjectForFree("wn", at(2, 2));
+    void zombieAttack_hurtsThePlantInThatCell() throws Exception {
+        game.addPlantForFree("wn", at(2, 2));
         game.zombieAttack(at(2, 2), 3);
         assertEquals("WN[07]", cell(2, 2));
     }
 
     @Test
-    void zombieAttack_doesNotHurtOtherZombies() {
-        game.addGameObject("z", at(2, 2));
+    void zombieAttack_doesNotHurtOtherZombies() throws Exception {
+        game.addZombie("z", at(2, 2));
         game.zombieAttack(at(2, 2), 3);
         assertEquals(" Z[05]", cell(2, 2));
     }
@@ -642,8 +644,8 @@ class GameTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void zombieReachingTheHouse_endsTheGame_andTheZombiesWin() {
-        game.addGameObject("sz", at(0, 0)); // sporty: walks every cycle
+    void zombieReachingTheHouse_endsTheGame_andTheZombiesWin() throws Exception {
+        game.addZombie("sz", at(0, 0)); // sporty: walks every cycle
         updateTimes(2);
 
         assertTrue(game.doZombiesReachedTheHouse());
@@ -653,9 +655,9 @@ class GameTest {
     }
 
     @Test
-    void aWallNut_stopsAZombieFromReachingTheHouse() {
-        game.addGameObject("z", at(0, 1));
-        game.addGameObjectForFree("wn", at(0, 0));
+    void aWallNut_stopsAZombieFromReachingTheHouse() throws Exception {
+        game.addZombie("z", at(0, 1));
+        game.addPlantForFree("wn", at(0, 0));
         updateTimes(6);
 
         assertFalse(game.doZombiesReachedTheHouse());
@@ -673,8 +675,8 @@ class GameTest {
     }
 
     @Test
-    void reset_restoresCoinsCyclesAndZombies() {
-        game.addGameObject("s", at(0, 0));
+    void reset_restoresCoinsCyclesAndZombies() throws Exception {
+        game.addPlant("s", at(0, 0));
         updateTimes(2);
 
         game.reset();
@@ -685,9 +687,9 @@ class GameTest {
     }
 
     @Test
-    void reset_clearsTheBoard() {
-        game.addGameObject("s", at(0, 0));
-        game.addGameObject("z", at(1, 5));
+    void reset_clearsTheBoard() throws Exception {
+        game.addPlant("s", at(0, 0));
+        game.addZombie("z", at(1, 5));
         game.generateSun();
 
         game.reset();
@@ -698,7 +700,7 @@ class GameTest {
     }
 
     @Test
-    void reset_clearsSunStatistics() {
+    void reset_clearsSunStatistics() throws Exception {
         game.addGameObject(new Sun(at(0, 0), game));
         game.catchObject(at(0, 0));
         game.generateSun();
@@ -710,7 +712,7 @@ class GameTest {
     }
 
     @Test
-    void reset_allowsCatchingAgainRightAway() {
+    void reset_allowsCatchingAgainRightAway() throws Exception {
         game.addGameObject(new Sun(at(0, 0), game));
         game.catchObject(at(0, 0));
 
@@ -771,8 +773,8 @@ class GameTest {
     }
 
     @Test
-    void resetWithParameters_restartsTheWholeGame() {
-        game.addGameObject("s", at(0, 0));
+    void resetWithParameters_restartsTheWholeGame() throws Exception {
+        game.addPlant("s", at(0, 0));
         updateTimes(3);
 
         game.reset(Level.INSANE, 3L);

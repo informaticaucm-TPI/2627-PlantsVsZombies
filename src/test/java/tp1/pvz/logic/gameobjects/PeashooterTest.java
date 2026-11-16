@@ -98,11 +98,11 @@ class PeashooterTest extends AbstractPlantTest {
     }
 
     @Test
-    void shot_hitsTheFirstZombieOfItsRow() {
+    void shot_hitsTheFirstZombieOfItsRow() throws Exception {
         Game game = new Game(0L, Level.EASY);
         Peashooter shooter = new Peashooter(new Position(0, 1), game);
-        game.addGameObject("z", new Position(0, 4));
-        game.addGameObject("z", new Position(0, 6));
+        game.addZombie("z", new Position(0, 4));
+        game.addZombie("z", new Position(0, 6));
 
         shooter.update();
 
@@ -111,10 +111,10 @@ class PeashooterTest extends AbstractPlantTest {
     }
 
     @Test
-    void shot_ignoresZombiesOfOtherRows() {
+    void shot_ignoresZombiesOfOtherRows() throws Exception {
         Game game = new Game(0L, Level.EASY);
         Peashooter shooter = new Peashooter(new Position(0, 1), game);
-        game.addGameObject("z", new Position(1, 4));
+        game.addZombie("z", new Position(1, 4));
 
         shooter.update();
 
@@ -122,10 +122,10 @@ class PeashooterTest extends AbstractPlantTest {
     }
 
     @Test
-    void shot_ignoresZombiesBehindThePlant() {
+    void shot_ignoresZombiesBehindThePlant() throws Exception {
         Game game = new Game(0L, Level.EASY);
         Peashooter shooter = new Peashooter(new Position(0, 4), game);
-        game.addGameObject("z", new Position(0, 2));
+        game.addZombie("z", new Position(0, 2));
 
         shooter.update();
 
@@ -133,12 +133,12 @@ class PeashooterTest extends AbstractPlantTest {
     }
 
     @Test
-    void shot_flyesOverSunsAndPlants() {
+    void shot_flyesOverSunsAndPlants() throws Exception {
         Game game = new Game(0L, Level.EASY);
         Peashooter shooter = new Peashooter(new Position(0, 0), game);
-        game.addGameObject("wn", new Position(0, 1));
+        game.addPlant("wn", new Position(0, 1));
         game.addGameObject(new Sun(new Position(0, 2), game));
-        game.addGameObject("z", new Position(0, 5));
+        game.addZombie("z", new Position(0, 5));
 
         shooter.update();
 
@@ -147,10 +147,10 @@ class PeashooterTest extends AbstractPlantTest {
     }
 
     @Test
-    void shot_killsASportyZombieInTwoCycles() {
+    void shot_killsASportyZombieInTwoCycles() throws Exception {
         Game game = new Game(0L, Level.EASY);
         Peashooter shooter = new Peashooter(new Position(0, 0), game);
-        game.addGameObject("sz", new Position(0, 5)); // endurance 2
+        game.addZombie("sz", new Position(0, 5)); // endurance 2
 
         shooter.update();
         shooter.update();

@@ -1,0 +1,23 @@
+lz
+az sz 7 3
+az bz 5 0
+az ez 5 2
+cp c 4 1
+
+
+cp p 0 3
+cp s 0 0
+c 6 1
+c 7 2
+
+
+a p 0 2
+
+
+
+
+
+
+
+
+e

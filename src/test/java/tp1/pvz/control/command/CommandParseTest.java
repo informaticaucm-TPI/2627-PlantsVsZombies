@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class CommandParseTest extends CommandTestBase {
 
-    private void assertParsesTo(Class<? extends Command> expected, String... words) {
+    private void assertParsesTo(Class<? extends Command> expected, String... words) throws Exception {
         assertInstanceOf(expected, Command.parse(words), String.join(" ", words));
     }
 
@@ -21,70 +21,64 @@ class CommandParseTest extends CommandTestBase {
     // ------------------------------------------------------------------ //
 
     @Test
-    void addPlant_byNameAndShortcut() {
+    void addPlant_byNameAndShortcut() throws Exception {
         assertParsesTo(AddPlantCommand.class, "add", "s", "0", "0");
         assertParsesTo(AddPlantCommand.class, "a", "s", "0", "0");
     }
 
     @Test
-    void addZombie_byNameAndShortcut() {
+    void addZombie_byNameAndShortcut() throws Exception {
         assertParsesTo(AddZombieCommand.class, "addZombie", "z", "7", "0");
         assertParsesTo(AddZombieCommand.class, "az", "z", "7", "0");
     }
 
     @Test
-    void cheatPlant_byNameAndShortcut() {
+    void cheatPlant_byNameAndShortcut() throws Exception {
         assertParsesTo(AddPlantCheatCommand.class, "cheatPlant", "p", "0", "0");
         assertParsesTo(AddPlantCheatCommand.class, "cp", "p", "0", "0");
     }
 
     @Test
-    void catch_byNameAndShortcut() {
+    void catch_byNameAndShortcut() throws Exception {
         assertParsesTo(CatchCommand.class, "catch", "0", "0");
         assertParsesTo(CatchCommand.class, "c", "0", "0");
     }
 
     @Test
-    void listPlants_byNameAndShortcut() {
+    void listPlants_byNameAndShortcut() throws Exception {
         assertParsesTo(ListPlantsCommand.class, "list");
         assertParsesTo(ListPlantsCommand.class, "l");
     }
 
     @Test
-    void listZombies_byNameAndShortcut() {
+    void listZombies_byNameAndShortcut() throws Exception {
         assertParsesTo(ListZombiesCommand.class, "listZombies");
         assertParsesTo(ListZombiesCommand.class, "lz");
     }
 
     @Test
-    void reset_byNameAndShortcut() {
+    void reset_byNameAndShortcut() throws Exception {
         assertParsesTo(ResetCommand.class, "reset");
         assertParsesTo(ResetCommand.class, "r");
     }
 
     @Test
-    void help_byNameAndShortcut() {
+    void help_byNameAndShortcut() throws Exception {
         assertParsesTo(HelpCommand.class, "help");
         assertParsesTo(HelpCommand.class, "h");
     }
 
     @Test
-    void exit_byNameAndShortcut() {
+    void exit_byNameAndShortcut() throws Exception {
         assertParsesTo(ExitCommand.class, "exit");
         assertParsesTo(ExitCommand.class, "e");
     }
 
     @Test
-    void none_byNameShortcutAndEmptyLine() {
+    void none_byNameShortcutAndEmptyLine() throws Exception {
         assertParsesTo(UpdateCommand.class, "none");
         assertParsesTo(UpdateCommand.class, "n");
         assertParsesTo(UpdateCommand.class, "");
-    }
-
-    @Test
-    void unknownWord_isAnUnknownCommand() {
-        assertParsesTo(UnknownCommand.class, "xyzzy");
-        assertParsesTo(UnknownCommand.class, "dance", "now");
     }
 
     @Test
@@ -122,12 +116,12 @@ class CommandParseTest extends CommandTestBase {
     // ------------------------------------------------------------------ //
 
     @Test
-    void commandsWithoutParameters_rejectExtraWords() {
+    void commandsWithoutParameters_rejectExtraWords() throws Exception {
         String[][] inputs = {
             {"list", "x"}, {"lz", "x"}, {"help", "x"}, {"exit", "x"}, {"none", "x"}, {"h", "1", "2"}};
         for (String[] input : inputs) {
             view = new tp1.pvz.testsupport.RecordingView();
-            parse(input).execute(game, view);
+            run(input);
             assertEquals(java.util.List.of(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER), view.errors,
                     String.join(" ", input));
         }
@@ -136,14 +130,14 @@ class CommandParseTest extends CommandTestBase {
     }
 
     @Test
-    void addCommands_withMissingParameters_reportThem() {
+    void addCommands_withMissingParameters_reportThem() throws Exception {
         String[][] inputs = {
             {"add"}, {"add", "s"}, {"add", "s", "1"},
             {"az"}, {"az", "z", "3"},
             {"cp"}, {"cp", "p"}, {"cp", "p", "1"}};
         for (String[] input : inputs) {
             view = new tp1.pvz.testsupport.RecordingView();
-            parse(input).execute(game, view);
+            run(input);
             assertEquals(java.util.List.of(Messages.COMMAND_PARAMETERS_MISSING), view.errors,
                     String.join(" ", input));
         }
@@ -151,11 +145,11 @@ class CommandParseTest extends CommandTestBase {
     }
 
     @Test
-    void addCommands_withTooManyParameters_areInvalid() {
+    void addCommands_withTooManyParameters_areInvalid() throws Exception {
         String[][] inputs = {{"add", "s", "1", "1", "1"}, {"az", "z", "1", "1", "1"}, {"cp", "p", "1", "1", "1"}};
         for (String[] input : inputs) {
             view = new tp1.pvz.testsupport.RecordingView();
-            parse(input).execute(game, view);
+            run(input);
             assertEquals(java.util.List.of(Messages.INVALID_COMMAND), view.errors, String.join(" ", input));
         }
     }
@@ -175,7 +169,7 @@ class CommandParseTest extends CommandTestBase {
     }
 
     @Test
-    void reset_acceptsZeroOrTwoParameters_only() {
+    void reset_acceptsZeroOrTwoParameters_only() throws Exception {
         assertParsesTo(ResetCommand.class, "reset");
         assertParsesTo(ResetCommand.class, "reset", "HARD", "5");
 

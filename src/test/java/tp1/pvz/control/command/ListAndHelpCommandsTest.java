@@ -108,6 +108,7 @@ class ListAndHelpCommandsTest extends CommandTestBase {
                 "[l]ist: print the list of available plants",
                 "[l]ist[Z]ombies: print the list of available zombies",
                 "[r]eset [<level> <seed>]: start a new game (if level and seed are both provided, they are used to initialize the game)",
+                "Rec[o]rd: show record of the current level",
                 "[h]elp: print this help message",
                 "[e]xit: terminate the program",
                 "[n]one | \"\": skips cycle"),

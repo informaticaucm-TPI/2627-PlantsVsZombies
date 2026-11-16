@@ -94,7 +94,7 @@ class GamePrinterTest {
     }
 
     @Test
-    void header_reflectsGeneratedAndCaughtSuns() {
+    void header_reflectsGeneratedAndCaughtSuns() throws Exception {
         gw.addGameObject(new Sun(new Position(0, 0), gw));
         gm.catchObject(new Position(0, 0));
         gw.generateSun();
@@ -111,12 +111,12 @@ class GamePrinterTest {
     // ------------------------------------------------------------------ //
 
     @Test
-    void newPlantsAndZombies_areDrawnWithTheirSymbols() {
-        gm.addGameObjectForFree("wn", new Position(0, 0));
-        gm.addGameObjectForFree("c", new Position(1, 1));
-        gm.addGameObject("bz", new Position(2, 2));
-        gm.addGameObject("sz", new Position(3, 3));
-        gm.addGameObject("ez", new Position(0, 4));
+    void newPlantsAndZombies_areDrawnWithTheirSymbols() throws Exception {
+        gm.addPlantForFree("wn", new Position(0, 0));
+        gm.addPlantForFree("c", new Position(1, 1));
+        gm.addZombie("bz", new Position(2, 2));
+        gm.addZombie("sz", new Position(3, 3));
+        gm.addZombie("ez", new Position(0, 4));
 
         String out = show();
 

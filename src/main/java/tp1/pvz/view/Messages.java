@@ -18,11 +18,11 @@ public class Messages {
 	public static final String VERSION = "1.0";
 
 	public static final String GAME_NAME = "PlantsVsZombies";
-	
+
 	public static final String USAGE = "Usage: %s <level> [<seed>]".formatted(GAME_NAME);
-	
+
 	public static final String USAGE_LEVEL_PARAM = "\t<level>: %s".formatted(Level.all(", "));
-	
+
 	public static final String USAGE_SEED_PARAM = "\t<seed>: %s".formatted(Messages.SEED_NOT_A_NUMBER);
 
 	public static final String WELCOME = String.format("%s %s%n", GAME_NAME, VERSION);
@@ -50,14 +50,20 @@ public class Messages {
 	public static final String HELP_DETAILS_COMMAND_HELP_SEPARATOR = ": ";
 
 	public static final String UNKNOWN_COMMAND = "Unknown command";
-	
+
 	public static final String COMMAND_PARAMETERS_MISSING = "Missing parameters";
 
 	public static final String COMMAND_INCORRECT_PARAMETER_NUMBER = "Incorrect parameter number";
 
+	public static final String INVALID_LEVEL = "Invalid level";
+
+	public static final String INVALID_SEED = "Invalid seed";
+
 	public static final String INVALID_POSITION = "Invalid position";
 
-	public static final String INVALID_GAME_OBJECT = String.format("Invalid object%n");
+	public static final String ALREADY_OCCUPIED_POSITION = "This position is already occupied";
+
+	public static final String INVALID_GAME_OBJECT = "Invalid object: %s";
 
 	public static final String INVALID_COMMAND = "Invalid command";
 
@@ -73,15 +79,11 @@ public class Messages {
 
 	public static final String SUNFLOWER_SYMBOL = "S";
 	public static final String SUNFLOWER_NAME = "Sunflower";
-	public static final String SUNFLOWER_DESCRIPTION = "[S]unflower: cost='%d' suncoins, damage='%d', endurance='%d'";
-	public static final String SUNFLOWER_ICON = " S[%02d]";
 	public static final String SUNFLOWER_NAME_AND_SHORTCUT = "[S]unflower";
 
 	public static final String ZOMBIE_SYMBOL = "Z";
 	public static final String ZOMBIE_NAME = "Zombie";
 	public static final String ZOMBIE_DESCRIPTION = "%s: speed='%d', damage='%d', endurance='%d'";
-	public static final String ZOMBIE_ICON = " Z[%02d]";
-	public static final String ZOMBIE_NAME_AND_SHORTCUT = "[Z]ombie";
 
 	public static final String WALL_NUT_SYMBOL = "WN";
 	public static final String WALL_NUT_NAME = "Wall-Nut";
@@ -106,19 +108,21 @@ public class Messages {
 	public static final String NOT_ENOUGH_COINS = "Not enough suncoins";
 
 	public static final String NUMBER_OF_CYCLES = "Number of cycles: %d%n";
-	
+
 	public static final String NUMBER_OF_COINS = "Sun coins: %d%n";
 
 	public static final String GENERATED_SUNS = "Generated suns: %d%n";
 
 	public static final String CAUGHT_SUNS = "Caught suns: %d%n";
 
+	public static final String POINTS = "Score: %d%n";
+
 	public static final String REMAINING_ZOMBIES = "Remaining zombies: %d%n";
-	
+
 	public static final String GAME_OVER = "Game over";
 
 	public static final String PLAYER_QUITS = "Player leaves the game";
-	
+
 	public static final String ZOMBIES_WIN = "Zombies win!";
 
 	public static final String PLAYER_WINS = "Player wins!";
@@ -148,13 +152,8 @@ public class Messages {
 
 	public static final String COMMAND_RESET_NAME = "reset";
 	public static final String COMMAND_RESET_SHORTCUT = "r";
-	public static final String COMMAND_RESET_DETAILS = "[r]eset";
-	// TODO: use me in part 2 (and remove the old command details)
-	// public static final String COMMAND_RESET_DETAILS = "[r]eset [<level> <seed>]";
-
-	public static final String COMMAND_RESET_HELP = "start a new game";
-	// TODO: use me in part 2 (and remove the old command help)
-	// public static final String COMMAND_RESET_HELP = "start a new game (if level and seed are both provided, they are used to initialize the game)";
+	public static final String COMMAND_RESET_DETAILS = "[r]eset [<level> <seed>]";
+	public static final String COMMAND_RESET_HELP = "start a new game (if level and seed are both provided, they are used to initialize the game)";
 
 	public static final String COMMAND_HELP_NAME = "help";
 	public static final String COMMAND_HELP_SHORTCUT = "h";
@@ -181,13 +180,25 @@ public class Messages {
 	public static final String COMMAND_CATCH_DETAILS = "[C]atch <col> <row>";
 	public static final String COMMAND_CATCH_HELP = "catch a sun, if possible, in position (col, row)";
 
-	public static final String NO_CATCHABLE_IN_POSITION = "No sun in (%d, %d)";
+	public static final String COMMAND_RECORD_NAME = "record";
+	public static final String COMMAND_RECORD_SHORTCUT = "o";
+	public static final String COMMAND_RECORD_DETAILS = "Rec[o]rd";
+	public static final String COMMAND_RECORD_HELP = "show record of the current level";
 
+	public static final String RECORD = "%s record is %d";
+
+	public static final String RECORD_FILE_NOT_FOUND = "Record file '%s' does not exist";
+	public static final String RECORD_FILE_NOT_READABLE = "Record file '%s' cannot be read";
+	public static final String RECORD_FILE_CORRUPTED = "Record file '%s' is corrupted: invalid line '%s'";
+	public static final String RECORD_FILE_NOT_WRITABLE = "Record file '%s' cannot be written";
+
+	public static final String NO_CATCHABLE_IN_POSITION = "No sun in (%d, %d)";
+	public static final String ALREADY_CAUGHT_SUN = "A sun has been caught in this cycle";
 	/**
 	 * Formats a debug message.
-	 * 
+	 *
 	 * @param message debug message
-	 * 
+	 *
 	 * @return the formated debug message;
 	 */
 	public static final String debug(String message) {
@@ -196,9 +207,9 @@ public class Messages {
 
 	/**
 	 * Formats an error message.
-	 * 
+	 *
 	 * @param message Error message
-	 * 
+	 *
 	 * @return the formated error message;
 	 */
 	public static final String error(String message) {

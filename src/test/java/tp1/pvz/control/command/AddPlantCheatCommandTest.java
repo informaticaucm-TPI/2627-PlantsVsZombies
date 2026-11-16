@@ -83,7 +83,7 @@ class AddPlantCheatCommandTest extends CommandTestBase {
     @Test
     void unknownPlant_isInvalidObject() {
         run("cp", "tree", "0", "0");
-        assertEquals(List.of(Messages.INVALID_GAME_OBJECT), view.errors);
+        assertEquals(List.of(Messages.INVALID_GAME_OBJECT.formatted("tree")), view.errors);
         assertEquals(0, game.getCycles());
         assertEquals(0, view.gamesShown);
     }
@@ -92,7 +92,7 @@ class AddPlantCheatCommandTest extends CommandTestBase {
     @Test
     void aZombieIsNotAPlant() {
         run("cp", "z", "0", "0");
-        assertEquals(List.of(Messages.INVALID_GAME_OBJECT), view.errors);
+        assertEquals(List.of(Messages.INVALID_GAME_OBJECT.formatted("z")), view.errors);
         assertTrue(game.isEmpty(at(0, 0)));
         assertEquals(0, game.getCycles());
     }
@@ -101,7 +101,7 @@ class AddPlantCheatCommandTest extends CommandTestBase {
     void outsideTheBoard_isInvalidPosition() {
         run("cp", "s", "8", "0");
         run("cp", "s", "0", "4");
-        assertEquals(List.of(Messages.INVALID_POSITION, Messages.INVALID_POSITION), view.errors);
+        assertEquals(List.of(Messages.INVALID_POSITION + ": (8, 0)", Messages.INVALID_POSITION + ": (0, 4)"), view.errors);
         assertEquals(0, game.getCycles());
     }
 
@@ -112,7 +112,7 @@ class AddPlantCheatCommandTest extends CommandTestBase {
 
         run("cp", "p", "0", "0");
 
-        assertEquals(List.of(Messages.INVALID_POSITION), view.errors);
+        assertEquals(List.of(Messages.INVALID_POSITION + ": (0, 0)"), view.errors);
         assertEquals(1, game.getCycles());
         assertEquals(0, view.gamesShown);
     }

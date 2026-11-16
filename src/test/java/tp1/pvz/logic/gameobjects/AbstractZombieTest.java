@@ -197,6 +197,53 @@ abstract class AbstractZombieTest {
         assertEquals(1, world.zombiesKilled);
     }
 
+    // ------------------------------------------------------------------ //
+    //  Score                                                               //
+    // ------------------------------------------------------------------ //
+
+    @Test
+    void killedByPlantAttack_awardsTenPoints() {
+        zombie.receivePlantAttack(expectedEndurance());
+        zombie.onExit();
+        assertEquals(10, world.points);
+    }
+
+    @Test
+    void killedByExplosion_awardsTwentyPoints() {
+        zombie.receiveExplosionAttack(expectedEndurance());
+        zombie.onExit();
+        assertEquals(20, world.points);
+    }
+
+    @Test
+    void explosionThatDoesNotKill_thenKilledByPlantAttack_awardsTenPoints() {
+        zombie.receiveExplosionAttack(expectedEndurance() - 1);
+        assertTrue(zombie.isAlive());
+        zombie.receivePlantAttack(1);
+        zombie.onExit();
+        assertEquals(10, world.points);
+    }
+
+    @Test
+    void alreadyDeadByPlantAttack_thenHitByExplosion_keepsTenPoints() {
+        zombie.receivePlantAttack(expectedEndurance());
+        zombie.receiveExplosionAttack(expectedEndurance());
+        zombie.onExit();
+        assertEquals(10, world.points);
+    }
+
+    @Test
+    void receiveExplosionAttack_reportsTheHit_andReducesHealth() {
+        assertTrue(zombie.receiveExplosionAttack(1));
+        assertTrue(zombie.getIcon().contains("[" + String.format("%02d", expectedEndurance() - 1) + "]"));
+    }
+
+    @Test
+    void noPointsAreAwarded_untilTheZombieLeavesTheGame() {
+        zombie.receiveExplosionAttack(expectedEndurance());
+        assertEquals(0, world.points);
+    }
+
     @Test
     void onEnter_doesNotTouchTheWorld() {
         zombie.onEnter();

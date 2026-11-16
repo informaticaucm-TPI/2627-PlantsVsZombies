@@ -30,7 +30,7 @@ class ExplosionActionTest {
         action.execute(world);
 
         assertEquals(List.of(new Attack(new Position(0, 1), 10), new Attack(new Position(1, 2), 10)),
-                world.plantAttacks);
+                world.explosionAttacks);
         assertTrue(world.zombieAttacks.isEmpty());
     }
 
@@ -42,13 +42,13 @@ class ExplosionActionTest {
 
         assertEquals(List.of(new Attack(new Position(2, 2), 3), new Attack(new Position(3, 3), 3)),
                 world.zombieAttacks);
-        assertTrue(world.plantAttacks.isEmpty());
+        assertTrue(world.explosionAttacks.isEmpty());
     }
 
     @Test
     void withoutPositions_nothingHappens() {
         new ExplosionAction(10, true, new Position[0]).execute(world);
-        assertTrue(world.plantAttacks.isEmpty());
+        assertTrue(world.explosionAttacks.isEmpty());
         assertTrue(world.zombieAttacks.isEmpty());
     }
 

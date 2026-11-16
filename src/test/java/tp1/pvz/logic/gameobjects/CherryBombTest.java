@@ -103,7 +103,7 @@ class CherryBombTest extends AbstractPlantTest {
     void explosion_isQueued_notExecutedImmediately() {
         plant.update();
         plant.update();
-        assertTrue(world.plantAttacks.isEmpty(),
+        assertTrue(world.explosionAttacks.isEmpty(),
                 "the explosion must wait in the action stack until the game runs it");
     }
 
@@ -126,12 +126,12 @@ class CherryBombTest extends AbstractPlantTest {
         world.runPushedActions();
 
         Set<Position> hit = new HashSet<>();
-        for (Attack attack : world.plantAttacks) {
+        for (Attack attack : world.explosionAttacks) {
             assertEquals(10, attack.damage());
             hit.add(attack.position());
         }
         assertEquals(neighbours(POS), hit);
-        assertEquals(8, world.plantAttacks.size(), "each neighbour is attacked exactly once");
+        assertEquals(8, world.explosionAttacks.size(), "each neighbour is attacked exactly once");
     }
 
     @Test
@@ -139,7 +139,7 @@ class CherryBombTest extends AbstractPlantTest {
         plant.update();
         plant.update();
         world.runPushedActions();
-        for (Attack attack : world.plantAttacks) {
+        for (Attack attack : world.explosionAttacks) {
             assertNotEquals(POS, attack.position());
         }
     }
@@ -159,7 +159,7 @@ class CherryBombTest extends AbstractPlantTest {
         corner.update();
         corner.update();
         assertDoesNotThrow(world::runPushedActions);
-        assertEquals(8, world.plantAttacks.size());
+        assertEquals(8, world.explosionAttacks.size());
     }
 
     // ------------------------------------------------------------------ //
