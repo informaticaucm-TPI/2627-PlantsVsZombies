@@ -36,11 +36,12 @@ considered appropriate, while at the same time providing a great deal of flexibi
 in regard to where the error is handled (in particular, to print an error message).
 
 - *File handling*: a useful addition to the application is the facility to save the
-state of a game to file and load the state of a game from file. The loading of the
-initial state will than be a particular case of this general mechanism. To this end,
+state of a game to file and load the state of a game from file. To this end,
 we add two new commands, one to write to a file and the other to read from a file.
-The use of the *command pattern* introduced in the previous assignment greatly
-facilitates the addition of new commands.
+The use of the *Command Pattern* introduced in the previous assignment greatly
+facilitates the addition of the new commands `save` and `load`.
+The use of the factories introduced in
+the previous assignment greatly facilitates the implementation of the `load` command.
   
 <!-- TOC --><a name="exceptions"></a>
 # Exception handling
