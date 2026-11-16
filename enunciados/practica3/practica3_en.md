@@ -386,7 +386,7 @@ object with a line break.
 an execution containing a serialization/deserialization will not have the same behaviour
 as the same execution without the serialization/deserialization.
 
-### Serialization format
+### Serialization format (incomplete)
 
 We explain our text-based serialization format via a simple example:
 ```
