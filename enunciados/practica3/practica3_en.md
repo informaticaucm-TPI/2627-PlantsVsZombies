@@ -511,12 +511,6 @@ the task of implementing the `load` command into the following subtasks:
 
 - [create the `LoadCommand` class](#load-command-class).
 
-On finishing these changes, we will need to check the exceptions that may be thrown on
-loading a file, though, regarding errors in the content of the file, we recommend first
-developing the code under the assumption that the file contains no format errors and then
-modifying it to add the handling of the exceptions that may be produced if it does have
-such errors.
-
 Note that the behaviour of the `reset` command will need to be adapted to the existence
 of the `load` command since reset should mean return to the last loaded state.
 
