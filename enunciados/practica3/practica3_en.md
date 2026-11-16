@@ -520,8 +520,7 @@ of the `load` command since reset should mean return to the last loaded state.
 We need to modify the `parse` methods of the game object classes in order to handle
 optional attribute information. If this information is present in the external representation
 following the name of the game object, the corresponding game object is
-created with the specified number of remaining lives or remaining cycles; if not, it is
-created with initial values (for plants and zombies, the resistance).
+created with the specified attribute values; if not, it is created with initial values.
 
 We also need to define a `GameObjectFactory` class that checks whether the text corresponds
 to the external representation of a game object, by using the `parse` methods of the
