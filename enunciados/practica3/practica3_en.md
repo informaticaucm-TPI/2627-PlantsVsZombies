@@ -559,7 +559,7 @@ public interface GameConfiguration {
 ```
 The last method could even be replaced with the method:
 ```java
- 	public GameObjectContainer getContainer();
+    public GameObjectContainer getContainer();
 ```
 
 <!-- inner TOC --><a name="game-configuration-loader"></a>
