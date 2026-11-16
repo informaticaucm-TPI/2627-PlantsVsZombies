@@ -554,7 +554,7 @@ public interface GameConfiguration {
     public int getGeneratedSuns();
     public int getCaughtSuns();
     
-    // not breaking encapsulation since not the value of an attribute
+    // not breaking encapsulation since not yet the value of an attribute of the game
     public List<GameObject> getGameObjects();
 }
 ```
