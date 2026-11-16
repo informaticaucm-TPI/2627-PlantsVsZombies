@@ -383,7 +383,7 @@ readability of the serialized content, we separate the external representation o
 object with a line break.
 
 [^5]: To simplify, we do not save the state of the pseudo-random number generator so that
-and execution containing a serialization/deserialization will not have the same behaviour
+an execution containing a serialization/deserialization will not have the same behaviour
 as the same execution without the serialization/deserialization.
 
 ### Serialization format
@@ -628,8 +628,8 @@ exception:
   `LoadCommand` class.
 
 [^10]: To be exhaustive about this, the validation should also check many other conditions,
-such as that values are within accepted ranges, and raise an exception if not. However,
-this would require a great deal of work and is certainly **not** obligatory.
+such as that values are within accepted ranges, and raise a suitable exception if not.
+However, this would require a great deal of work and is certainly **not** obligatory.
 
 <!-- inner TOC --><a name="game-load"></a>
 ### Adding the implementation of the load command to the `Game` class
