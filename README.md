@@ -12,3 +12,4 @@
 ### Práctica 3
 - [Enunciado](./enunciados/practica3/practica3.md)
 - [Plantillas](./plantillas/practica3/src/pvz/view)
+- [Tests](./plantillas/practica3/src/test)
