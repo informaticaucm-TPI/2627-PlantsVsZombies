@@ -1,0 +1,6 @@
+PlantsVsZombies 1.0
+
+Level: HARD
+Random generator initialized with seed: 18
+[ERROR] Error: Record file 'record.txt' is corrupted: invalid line 'HARD:-5'
+
