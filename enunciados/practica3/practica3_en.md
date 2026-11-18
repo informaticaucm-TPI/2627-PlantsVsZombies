@@ -10,7 +10,7 @@
 <!-- TOC --><a name="practica-3-excepcionesYficheros"></a>
 # Assignment 3: Exception-handling and file handling
 
-**Submission: December 2026, 12:00**
+**Submission: December 2nd 2026, 12:00**
 
 **Objectives:** handling exceptions and files
 
