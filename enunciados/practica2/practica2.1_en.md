@@ -204,10 +204,10 @@ semantic validity is sometimes debatable. For example, if the position of a game
 that game object, creating a valid game object by parsing a string such as the argument to the
 `addPlant` command inevitably involves checking whether the position is a valid position. If we consider
 the position validity to be semantic, we should parse the string and create the corresponding game object
-in the *Model* (in our case, in a method of the `Game` class) while if we consider the position validity
-to be syntactic, we can parse the string and create the corresponding game object in the *Controller*
-(in our case in the `parse` method of the corresponding command class). For reasons that will become clear
-in assignment 3, we recommend the former.
+in the *Model* (in our case, in a method of the `Game` class called from the `execute` method of the
+command) while if we consider the position validity to be syntactic, we can parse the string and create
+the corresponding game object in the *Controller* (in our case in the `parse` method of the corresponding
+command class). For reasons that will become clear in assignment 3, we recommend the former.
 
 [^5]: **Design principles**: Fragile code is code which makes implicit assumptions about its
 environment (where this refers to the rest of the program code together with the program environment)
