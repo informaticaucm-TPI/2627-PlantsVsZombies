@@ -180,14 +180,6 @@ something similar to the following:
 			Messages.LEVEL_NOT_A_NUMBER_ERROR.formatted(commandWords[1]), nfe);
 	}
 ```
-Note that with some commands, parsing is carried out both in the *Contol* part and in the *Model*
-part of the application. For example, only the *Model* can parse the arguments to the `add`
-command since this is carried out by calling the `parse` method of one of the factories which
-calls the `parse` method of the game objects. Therefore, the
-*Model* part of the application can also throw parsing exceptions. All exceptions thrown during
-the parsing of a command (i.e. during the execution of the `parse` method of one of the commands),
-whether or not they are thrown in the *Model* part of the application, should be caught by the
-`parse` method of the corresponding command class and rethrown wrapped in a `CommandParseException`.
 
 ### Execution errors
 
@@ -202,6 +194,16 @@ The `execute` method of the `Command` class must now be declared to throw except
 ```java
 	public abstract void execute(GameModel game, GameView view) throws CommandExecuteException;
 ```
+
+Note that with some commands, some of the parsing of the command is carried out in the *Model*
+part of the application. For example, the *Model* is responsible for parsing the arguments to
+the `add` command since this is carried out by calling the `parse` method of one of the factories
+which calls the `parse` method of the game objects. Therefore, the *Model* part of the application
+can also throw parsing exceptions during the execution of commands such as the `add`
+command, i.e. in calls made from the `execute` method of the `add` command (and also during the
+execution of the `load` command, see below). The latter exceptions should be caught in the
+`execute` method of the corresponding command class and rethrown wrapped in a
+`CommandExecuteException`.
 
 ### Capturing parsing errors and execution errors in the controller
 
