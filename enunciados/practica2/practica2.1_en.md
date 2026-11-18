@@ -200,14 +200,16 @@ syntactic validity of the arguments (whether it is possible to create the intern
 be checked in the parsing of the *Controller* MVC component whereas semantic validity of the arguments
 (whether the information of the arguments is in accordance with the logic, in our case, with the rules of
 the game) should be checked in the *Model* MVC component. However, the division between syntactic and
-semantic validity is sometimes debatable. For example, if the position of a game object is an attribute of
-that game object, creating a valid game object by parsing a string such as the argument to the
-`addPlant` command inevitably involves checking whether the position is a valid position. If we consider
-the position validity to be semantic, we should parse the string and create the corresponding game object
-in the *Model* (in our case, in a method of the `Game` class called from the `execute` method of the
-command) while if we consider the position validity to be syntactic, we can parse the string and create
-the corresponding game object in the *Controller* (in our case in the `parse` method of the corresponding
-command class). For reasons that will become clear in assignment 3, we recommend the former.
+semantic validity is sometimes debatable. For example, regarding the position part of the argument to
+the `add` command, if parsing this part of the string does not check whether the position is a valid
+position, position objects representing invalid positions could be created. So is such parsing to be
+considered `syntactic` and carried out in the *Controller* or semantic and carried out in the *Model*?
+In our case, the call to the `parse` methods of the factories must be done from the `Game` class
+(as part of the command execution) rather than from the command class (as part of the command parsing)
+since these methods expect an argument of type `GameWorld` and the command only knows the type
+`GameModel`. For reasons that will become clear in Assignment 3, we also require the `parse` method
+of the factories to be responsible for parsing the position string (via a call to the `parse` method
+of the `Position` class.
 
 [^5]: **Design principles**: Fragile code is code which makes implicit assumptions about its
 environment (where this refers to the rest of the program code together with the program environment)
