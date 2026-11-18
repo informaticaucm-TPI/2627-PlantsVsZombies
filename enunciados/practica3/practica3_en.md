@@ -205,7 +205,7 @@ execution of the `load` command, see below). The latter exceptions should be cau
 `execute` method of the corresponding command class and rethrown wrapped in a
 `CommandExecuteException`.
 
-### Capturing parsing errors and execution errors in the controller
+### Capturing both parsing errors and execution errors in the controller
 
 As already stated, both types of exceptions, `CommandParseException`s and `CommandExecuteException`s,
 reach the controller, which is responsible for catching them and sending the 
