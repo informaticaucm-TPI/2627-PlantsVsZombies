@@ -18,7 +18,7 @@
       - [Counting generated suns and caught suns](#soles-generados-y-soles-cogidos)
       - [Ensuring only one catch on each cycle](#catchcommand)
   * [The `GameAction` interface and the `ExplosionAction` class](#la-interfaz-gameactions-y-las-acciones-explosionaction)
-  * [Adding generated zombies to the game](#adding-zombies)
+  * [Adding generated zombies to the game (optional)](#adding-zombies)
 - [Tests](#pruebas)
 <!-- TOC end -->
 <!-- TOC --><a name="práctica-2-parte-ii-plantas-contra-zombis-extended"></a>
