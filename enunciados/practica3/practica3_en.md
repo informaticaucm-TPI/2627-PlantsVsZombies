@@ -261,8 +261,8 @@ the parameter did not correspond to any known game object. However, returning th
 not permit these two types of error to be distinguished[^3]. Generating error data, in particular an
 error message, at the point in the code where the error occurs enables such distinction. We could
 repurpose the boolean return value and maintain it as an indication of whether or not the game state
-has been modified (we could alse return `void` instead). The program should now display the following
-error messages (notice the two messages, one from each level of exception):
+has been modified (we could also simply return `void` instead). The program should now display the
+following error messages (notice the two messages, one from each level of exception):
 
 [^3]: If, instead of having the method return false, you checked this and other conditions from
 the `execute` method of the `AddPlantCommand`, `AddPlantCheatCommand` or `AddZombieCommand`,
@@ -273,7 +273,7 @@ that known as LBYL.
 	```
 	[DEBUG] Executing: add 3-2 poTaTo
 
- 	[ERROR] Error: Command parse problem
+ 	[ERROR] Error: Command execute problem
  	[ERROR] Error: Unknown game object: "3-2 poTaTo"
 	```
 - On trying to add an object in a position that is outside the board:
@@ -288,14 +288,14 @@ thrown by the `parse` of the factories when an attempt is made to parse a string
 part of which is not the name of any known game object (c.f. the exception thrown by
 the `parse` method of the `CommandGenerator`). We handle the second by
 defining a new exception class `OffBoardException` to be thrown when an attempt is made to
-access a position that is outside the board. The method(s) of `GameModel` called to add a plant or
+use a position that is outside the board. The method(s) of `GameModel` called to add a plant or
 a zombie must now be declared to throw these two exceptions (and more, as we see below), e.g.:
 
 ```java
 public boolean addGameObject(...) throws OffBoardException, ObjectParseException;
 ```
 
-We also define the following new exception class for exceptions which may be thrown when parsing
+We also define the following new exception class to indicate unsuccessful parsing of
 text that is expected to represent a position:
 
   - `PositionParseException`: to be thrown by the `parse` method of the `Position` class 
@@ -331,9 +331,7 @@ never returns `null`; either the parsing is successful or an exception is thrown
 [^4]: This is in accordance with the behaviour of library methods such as
 [Integer.valueOf](https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html#valueOf-java.lang.String-). 
 
-As stated in a previous section, exceptions thrown in the *Model* part of the application
-during the parsing of a command should be caught in the `parse` method of the command class
-and rethrown wrapped in a `CommandParseException`. Similarly, exceptions thrown in the *Model*
+Exceptions thrown in the *Model*
 part of the application during the execution of a command should be caught in the `execute`
 method of the command class and wrapped in a `CommandExecuteException`, for example:
 
