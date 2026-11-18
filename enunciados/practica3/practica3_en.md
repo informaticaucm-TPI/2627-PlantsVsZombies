@@ -195,16 +195,6 @@ The `execute` method of the `Command` class must now be declared to throw except
 	public abstract void execute(GameModel game, GameView view) throws CommandExecuteException;
 ```
 
-Note that with some commands, some of the parsing of the command is carried out in the *Model*
-part of the application. For example, the *Model* is responsible for parsing the arguments to
-the `add` command since this is carried out by calling the `parse` method of one of the factories
-which calls the `parse` method of the game objects. Therefore, the *Model* part of the application
-can also throw parsing exceptions during the execution of commands such as the `add`
-command, i.e. in calls made from the `execute` method of the `add` command (and also during the
-execution of the `load` command, see below). The latter exceptions should be caught in the
-`execute` method of the corresponding command class and rethrown wrapped in a
-`CommandExecuteException`.
-
 ### Capturing both parsing errors and execution errors in the controller
 
 As already stated, both types of exceptions, `CommandParseException`s and `CommandExecuteException`s,
@@ -251,23 +241,37 @@ execution in the model part of the application may generate exceptions that we w
 <!-- TOC --><a name="gamemodel-exceptions"></a>
 ## Exceptions thrown in the *Model* part of the program
 
-Some of the errors that occur during the parsing of commands and most, if not all, of the errors
-that occur during the execution of commands, arise in the game logic, that is, in the *Model* part
-of the program. In the
-previous assignment, the methods in which the errors occurred may have returned a `boolean` value
-to indicate whether the execution had succeeded or failed. For example, the method of `GameModel`
-called to add a plant returned `false` when the position passed as argument was outside the board or when
+As stated above, the `execute` method of the `Command` class must now be declared to throw
+exceptions of type `CommandExecuteException`:
+
+Most, if not all, of the errors that occur during the execution of commands, arise in the game logic,
+that is, in the *Model* part of the program. In the previous assignment, the methods in which the
+errors occurred may have returned a `boolean` value to indicate whether the execution had succeeded
+or failed. For example, the method of `GameModel` called to add a plant returned `false` when the
+position passed as argument was outside the board or when
 the parameter did not correspond to any known game object. However, returning the value `false` did
 not permit these two types of error to be distinguished[^3]. Generating error data, in particular an
 error message, at the point in the code where the error occurs enables such distinction. We could
 repurpose the boolean return value and maintain it as an indication of whether or not the game state
-has been modified (we could also simply return `void` instead). The program should now display the
-following error messages (notice the two messages, one from each level of exception):
+has been modified (we could also simply return `void` instead).
 
 [^3]: If, instead of having the method return false, you checked this and other conditions from
 the `execute` method of the `AddPlantCommand`, `AddPlantCheatCommand` or `AddZombieCommand`,
 you should now remove these checks in order to use the exceptions policy known as EAFP rather than
 that known as LBYL.
+
+Note that with some commands, some of the parsing of the command is carried out in the *Model*
+part of the application as part of the command execution. For example, the *Model* is responsible
+for parsing the arguments to the `add` command since this is carried out by calling the `parse`
+method of one of the factories which calls the `parse` method of the game objects. Therefore, the
+*Model* part of the application can also throw parsing exceptions during the execution of commands
+such as the `add` command, i.e. in calls made from the `execute` method of the `add` command. Like
+all exceptions thrown during the exeuction of a command, these exceptions should be caught in the
+`execute` method of the corresponding command class and rethrown wrapped in a
+`CommandExecuteException`.
+
+The program should now display the following error messages for the two cases discussed
+above (notice the two messages, one from each level of exception):
 
 - On trying to add an unknown type of game object:
 	```
