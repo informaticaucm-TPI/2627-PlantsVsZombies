@@ -480,7 +480,7 @@ the `save` command could be implemented with one `String` parameter: the file na
 As can be seen from the output of the `help` command, in this assignment you must
 implement the `save` command with a file-name parameter, so the `parse` method of
 `SaveCommand` will have to deal with this parameter. It is typical for the `save`
-command to add a file extension, we suggest `.pvz` so the user does not have
+command to add a file extension, we suggest `.pvz`, so the user does not have
 to provide it.
 
 [^6]: Which class should be responsible for opening the input character stream is a
