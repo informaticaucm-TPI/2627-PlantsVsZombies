@@ -418,7 +418,7 @@ The information on the first line represents, from left to right:
 The information on the following lines represents the state of a game object, according to the external
 representation format described in part II of the Assignment 2 problem statement with the
 addition of attribute values: the remaining lives (or remaining cycles for suns) and, for some game
-object, an internal counter value. From top to bottom:
+objects, an internal counter value. From top to bottom:
 
 - in position (0,0), a Sunflower with 1 remaining life and internal-counter-value 2,
 - in position (1,0), a peashooter with 3 remaining lives,
