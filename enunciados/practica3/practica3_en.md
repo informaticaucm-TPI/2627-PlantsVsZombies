@@ -437,7 +437,7 @@ or in the form of
 "cycles-since-last-move" (for zombies) / "cycles-since-creation" (for cherryBomb) / "cycles-since-last-sun-generation" (for sunflowers)
 or in the form of
 "game cycle on creation" (action or no action on a given cycle calculated using the appropriate mod operation)
-etc. Note that neither a peashooter nor a sportyZombie needs an internal counter since they peform their
+etc. Note that neither a peashooter nor a sportyZombie needs an internal counter since they perform their
 action on every cycle.
 
 
