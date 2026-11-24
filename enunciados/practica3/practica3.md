@@ -164,7 +164,8 @@ de, **al menos**, los siguientes tipos (en la sección siguiente aparecerá algu
 
 - `InvalidPositionException`: nuevo tipo de excepción lanzada cuando una posición del juego proporcionada por el usuario
   está ocupada o no pertenece a una casilla válida. Debería ser consciente de la posición problemática.
-  - `NotCatchablePositionException`: Excepción específica para representar una posición sobre la que no se ha podido
+
+- `NotCatchablePositionException`: Excepción específica para representar una posición sobre la que no se ha podido
     coger ningún objeto (e.g. sol en nuestro caso).
 
 - `NotEnoughSuncoinsException`: nuevo tipo de excepción lanzada cuando no es posible realizar alguna acción pedida por el
