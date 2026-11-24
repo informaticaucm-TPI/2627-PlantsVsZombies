@@ -5,6 +5,10 @@
 	- [Exceptions thrown in the *Control* part of the program](#command-exceptions)
 	- [Exceptions thrown in the *Model* part of the program](#gamemodel-exceptions)
 - [File handling](#files)
+ 	- [Serialization / deserialization](#serialization)
+	- [Saving the game state to file: the `save` command](#save-command)
+	- [Loading the game state from file: the `load` command](#load-command)
+	- [Adapting the `reset` method of the `Game` class](#reset-load-game)
 <!-- TOC end -->
 
 <!-- TOC --><a name="practica-3-excepcionesYficheros"></a>
