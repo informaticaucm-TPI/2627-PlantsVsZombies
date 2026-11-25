@@ -541,20 +541,27 @@ corresponding game object is created with the specified attribute values; if not
 `parse` of a command argument), it is created with initial values as in the previous
 assignment.
 
-We also need to define a `GameObjectFactory` class that is simply a wrapper for the
+We also need to define a `GameObjectFactory` class that is mostly just a wrapper for the
 two existing factories: its `parse`method checks whether the text corresponds
 to the external representation of a game object, by using the `parse` methods of the
-`PlantFactory` and the `ZombieFactory`. Recall that these two methods now throw
+`PlantFactory` the parse method of the `ZombieFactory` and a call to the `parse` of any
+game object that is neither a zombie nor a plant (currently, only the `Sun` class).
+Recall that `parse` method of each of the factories now throws
 `GameModelParseException`s if the text is not a valid external representation of a
 plant, respectively a zombie. Accordingly, the `parse` method of the `GameObjectFactory`
-must call the `parse` method of the `PlantFactory`, returning the value that it returns.
-If the latter method throws a `GameModelParseException` (indicating that the text contains
-a syntactically-invalid position or is not the external representation of a known plant),
-it must catch this exception and call the `parse` method of the `ZombieFactory`, returning
-the value that it returns. If the latter method also throws a `GameModelParseException`
-(indicating that the text contains a syntactically-invalid position or is not the external
-representation of a known zombie) it must not catch it.
+should proceed as follows
 
+1. Call the `parse` method of the `PlantFactory`, returning the value that it returns.
+2. If this method throws a `GameModelParseException` (indicating that the text contains
+   a syntactically-invalid position or is not the external representation of a known plant),
+   catch this exception and call the `parse` method of the `ZombieFactory`, returning
+   the value that it returns.
+3. If this method also throws a `GameModelParseException` (indicating that the text
+   contains a syntactically-invalid position or is not the external representation of a
+   known zombie) catch this exception and call the `parse` method of any non-plant,
+   non-zombie game objects (so in the current implementation, only the `Sun` `parse`
+   method). If any of them returns a non-null value, return that value, otherwise throw
+   a `GameModelParseException`.
 
 <!-- inner TOC --><a name="game-configuration"></a>
 ### Representing the loaded state of the game: the `GameConfiguration` interface
