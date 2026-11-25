@@ -556,7 +556,7 @@ proceed as follows:
    a syntactically-invalid position or is not the external representation of a known plant),
    catch this exception and call the `parse` method of the `ZombieFactory`, returning
    the value that it returns.
-3. If it also throws a `GameModelParseException` (indicating that the text
+3. If this method also throws a `GameModelParseException` (indicating that the text
    contains a syntactically-invalid position or is not the external representation of a
    known zombie) catch this exception and call the `parse` method of any non-plant,
    non-zombie game objects (so in the current implementation, only the `Sun` `parse`).
