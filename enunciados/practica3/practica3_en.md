@@ -552,16 +552,20 @@ plant, respectively a zombie. Accordingly, the `GameObjectFactory` `parse` metho
 proceed as follows:
 
 1. Call the `parse` method of the `PlantFactory`, returning the value that it returns.
-2. If this method throws a `GameModelParseException` (indicating that the text contains
+2. If it throws a `GameModelParseException` (indicating that the text contains
    a syntactically-invalid position or is not the external representation of a known plant),
    catch this exception and call the `parse` method of the `ZombieFactory`, returning
    the value that it returns.
-3. If this method also throws a `GameModelParseException` (indicating that the text
+3. If it also throws a `GameModelParseException` (indicating that the text
    contains a syntactically-invalid position or is not the external representation of a
-   known zombie) catch this exception and call the `parse` method of any non-plant,
-   non-zombie game objects (so in the current implementation, only the `Sun` `parse`
-   method). If any of them returns a non-null value, return that value, otherwise throw
-   a `GameModelParseException`.
+   known zombie) catch this exception and
+   Call the `parse` method of the `Position` class to get the position object;
+   
+   - if this method throws a `PositionParseException` do not catch it.
+   - otherwise, call the `parse` method of any non-plant, non-zombie game objects (so
+     in the current implementation, only the `Sun` `parse`), passing them the position
+     object. If any of them returns a non-null value, return that value, otherwise
+     throw an `ObjectParseException`.
 
 <!-- inner TOC --><a name="game-configuration"></a>
 ### Representing the loaded state of the game: the `GameConfiguration` interface
