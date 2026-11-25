@@ -546,10 +546,10 @@ two existing factories: its `parse`method checks whether the text corresponds
 to the external representation of a game object, by using the `parse` methods of the
 `PlantFactory` the parse method of the `ZombieFactory` and a call to the `parse` of any
 game object that is neither a zombie nor a plant (currently, only the `Sun` class).
-Recall that `parse` method of each of the factories now throws
+Recall that the `parse` method of each of the factories now throws
 `GameModelParseException`s if the text is not a valid external representation of a
-plant, respectively a zombie. Accordingly, the `parse` method of the `GameObjectFactory`
-should proceed as follows
+plant, respectively a zombie. Accordingly, the `GameObjectFactory` `parse` method should
+proceed as follows:
 
 1. Call the `parse` method of the `PlantFactory`, returning the value that it returns.
 2. If this method throws a `GameModelParseException` (indicating that the text contains
