@@ -559,8 +559,8 @@ proceed as follows:
 3. If it also throws a `GameModelParseException` (indicating that the text
    contains a syntactically-invalid position or is not the external representation of a
    known zombie) catch this exception and call the `parse` method of any non-plant,
-   non-zombie game objects (so in the current implementation, only the `Sun` `parse`),
-   passing them the position object. If any of them returns a non-null value, return
+   non-zombie game objects (so in the current implementation, only the `Sun` `parse`).
+   If any of them returns a non-null value, return
    that value, otherwise throw an `ObjectParseException`. This is assuming that the
    call to the `parse` of the `Position` class is performed in the `parse` of the
    game objects; if, in your code, it is the `parse` method of the factories that
