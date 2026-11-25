@@ -558,8 +558,8 @@ proceed as follows:
    the value that it returns.
 3. If it also throws a `GameModelParseException` (indicating that the text
    contains a syntactically-invalid position or is not the external representation of a
-   known zombie) catch this exception and
-   Call the `parse` method of the `Position` class to get the position object;
+   known zombie) catch this exception and call the `parse` method of the `Position`
+   class to get the position object;
    
    - if this method throws a `PositionParseException` do not catch it.
    - otherwise, call the `parse` method of any non-plant, non-zombie game objects (so
