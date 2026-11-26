@@ -353,6 +353,10 @@ With this procedure, no information is lost since the wrapped exception can be r
 using the `getCause` method of the `Throwable` class (see the above code for the `run`
 method of the controller).
 
+N.B. If you wish, you may add other subclasses of `GameModelException` such as
+`NotEnoughCoinsException` or `PositionOccupiedException`. Alternatively, you can use
+`GameModelException` with an error-specific message.
+
 
 <!-- TOC --><a name="files"></a>
 # File-handling
@@ -399,7 +403,7 @@ HARD 28 10 2 18 0
 0-0 Sunflower 1 2
 1-0 Peashooter 3
 5-0 CommonZombie 5 2
-5-2 SportingZombie 2
+5-2 SportyZombie 2
 5-3 ExplodingZombie 5 1
 7-1 BucketheadZombie 8 2
 2-0 Sun 6
