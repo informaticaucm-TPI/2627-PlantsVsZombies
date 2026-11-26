@@ -442,7 +442,8 @@ or in the form of
 or in the form of
 "game cycle on creation" (action or no action on a given cycle calculated using the appropriate mod operation)
 etc. Note that neither a peashooter nor a sportyZombie needs an internal counter since they perform their
-action on every cycle.
+action on every cycle. However, if, in the interest of homogeneity, you have given them an internal counter, you
+may also add this value to the file (again, in the interest of homogeneity).
 
 
 <!-- TOC --><a name="save-command"></a>
