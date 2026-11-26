@@ -427,7 +427,7 @@ objects, an internal counter value. From top to bottom:
 - in position (0,0), a Sunflower with 1 remaining life and internal-counter-value 2,
 - in position (1,0), a peashooter with 3 remaining lives,
 - in position (5,0), a common zombie with 5 remaining lives and internal-counter-value 2,
-- in position (5,2), a sporting zombie with 2 remaining lives,
+- in position (5,2), a sporty zombie with 2 remaining lives,
 - in position (5,3), an exploding zombie with 5 remaining lives and internal-counter-value 1,
 - in position (7,1), a buckethead zombie with 8 remaining lives and internal-counter-value 3,
 - in position (2,0), a Sun with 6 remaining cycles,
