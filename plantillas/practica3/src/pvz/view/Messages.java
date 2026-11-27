@@ -73,8 +73,6 @@ public class Messages {
 
 	public static final String PEASHOOTER_SYMBOL = "P";
 	public static final String PEASHOOTER_NAME = "Peashooter";
-	public static final String PEASHOOTER_DESCRIPTION = "[P]eashooter: cost='%d' suncoins, damage='%d', endurance='%d'";
-	public static final String PEASHOOTER_ICON = " P[%02d]";
 	public static final String PEASHOOTER_NAME_AND_SHORTCUT = "[P]eashooter";
 
 	public static final String SUNFLOWER_SYMBOL = "S";
